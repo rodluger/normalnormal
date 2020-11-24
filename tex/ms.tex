@@ -149,6 +149,7 @@ $K \times K$ identity matrix.
 The expression for the covariance $\tilde{\pmb{\Sigma}}$ may now be written
 %
 \begin{align}
+    \label{eq:SigmaTildeExp}
     \tilde{\pmb{\Sigma}}
      & =
     \mathbb{E}\left[
@@ -366,12 +367,33 @@ The convergence criterion for this series may be written
 or, equivalently,
 %
 \begin{align}
-    \mathbb{E}\big[z^2\big]    & < 1
-    \nonumber                        \\
-    \frac{\bar{\Sigma}}{\mu^2} & < 1
+    \mathbb{E}\big[z^2\big] & < 1
     \quad.
 \end{align}
 %
+However, the quantity $z^2$ is a random variable, equal to the square of
+the weighted sum of $K$ standard normal random variables. The series therefore
+converges only if $z^2 < 1$ for \emph{all possible values} of $z^2$, a condition
+that is never strictly met except in the trivial case $\pmb{\Sigma} = \mathbf{0}$.
+This may be understood intuitively: given a (very) large number of draws from
+a Gaussian process, one of the draws will eventually correspond to a value of
+$\mathbf{x}$ whose
+mean $\bar{x}$ is arbitrarily close to zero, for which the denominators in the
+expectations in Equation~(\ref{eq:SigmaTildeExp}) diverge.
+
+While this is true for any
+$\mu$ and $\pmb{\Sigma} \ne \mathbf{0}$, in practice the probability of
+drawing $\bar{x} \approx 0$ is vanishingly small provided the expectation of
+$z^2$ is small, a condition that may be expressed as
+%
+\begin{align}
+    \frac{\bar{\Sigma}}{\mu^2} \ll 1
+    \quad.
+\end{align}
+%
+In this limit, any attempt to approximate $\tilde{\pmb{\Sigma}}$
+numerically will yield a consistent, finite solution that
+asymptotically approaches the expression derived above.
 
 \clearpage
 
