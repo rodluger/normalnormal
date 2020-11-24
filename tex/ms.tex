@@ -86,12 +86,39 @@ The covariance is given by
 \begin{align}
     \tilde{\pmb{\Sigma}}
      & =
-    \mathbb{E}\big[ \tilde{\mathbf{x}} \tilde{\mathbf{x}}^\top \big]
-    - \tilde{\pmb{\mu}}\tilde{\pmb{\mu}}^\top
+    \mathbb{E}\big[ (\tilde{\mathbf{x}} - \tilde{\pmb{\mu}}) (\tilde{\mathbf{x}} - \tilde{\pmb{\mu}} )^\top \big]
     \nonumber \\[0.5em]
      & =
-    \mathbb{E}\left[ \frac{\mathbf{x}\mathbf{x}^\top}{\bar{x}^2} \right]
-    - \mathbf{J}_K
+    \mathbb{E}\left[
+        \left(\frac{\mathbf{x}}{\bar{x}} - \mathbf{j}_K\right)
+        \left(\frac{\mathbf{x}}{\bar{x}} - \mathbf{j}_K\right)^\top
+        \right]
+    \nonumber \\[0.5em]
+     & =
+    \mathbb{E}\left[
+        \frac{\mathbf{x}\mathbf{x}^\top}{\bar{x}^2}
+        -
+        \frac{\mathbf{x}\,\mathbf{j}_K^\top}{\bar{x}}
+        -
+        \frac{\mathbf{j}\,\mathbf{x}_K^\top}{\bar{x}}
+        +
+        \mathbf{J}_K
+        \right]
+    \nonumber \\[0.5em]
+     & =
+    \mathbb{E}\left[
+        \frac{\mathbf{x}\mathbf{x}^\top}{\bar{x}^2}
+        \right]
+    -
+    \mathbb{E}\left[
+        \frac{\mathbf{x}\,\mathbf{j}_K^\top}{\bar{x}}
+        \right]
+    -
+    \mathbb{E}\left[
+        \frac{\mathbf{j}_K\,\mathbf{x}^\top}{\bar{x}}
+        \right]
+    +
+    \mathbf{J}_K
     \quad,
 \end{align}
 %
@@ -131,7 +158,24 @@ The expression for the covariance $\tilde{\pmb{\Sigma}}$ may now be written
             \bar{x}^2
         }
         \right]
-    - \mathbf{J}_K
+    -
+    \mathbb{E}\left[
+        \frac{
+            (\pmb{\mu} + \mathbf{L} \mathbf{u})\mathbf{j}_K^\top
+        }{
+            \bar{x}
+        }
+        \right]
+    -
+    \mathbb{E}\left[
+        \frac{
+            \mathbf{j}_K(\pmb{\mu} + \mathbf{L} \mathbf{u})^\top
+        }{
+            \bar{x}
+        }
+        \right]
+    +
+    \mathbf{J}_K
 \end{align}
 %
 The mean $\bar{x}$ is
@@ -140,146 +184,188 @@ The mean $\bar{x}$ is
     \bar{x} & = \sum\limits_{j=0}^{K-1}(\mu_j + L_{i,j}u_j)
     \nonumber                                               \\
             & =
-    \mu + \frac{1}{K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}
-    \quad.
-\end{align}
-%
-Plugging this in and dividing the numerator and denominator in the expecation
-by $\mu^2$, we obtain
-%
-\begin{align}
-    \tilde{\pmb{\Sigma}}
-     & =
-    \frac{1}{\mu^2}
-    \mathbb{E}\left[
-        \frac{
-            (\pmb{\mu} + \mathbf{L} \mathbf{u})(\pmb{\mu} + \mathbf{L} \mathbf{u})^\top
-        }{
-            \left(1 + \frac{1}{\mu K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^2
-        }
-        \right]
-    - \mathbf{J}_K
-    \nonumber \\[0.5em]
-     & =
-    \frac{1}{\mu^2}
-    \mathbb{E}\left[
-        \frac{
-            \mu^2 \mathbf{J}_K
-            +
-            \mu \, \mathbf{j}_K\mathbf{u}^\top \mathbf{L}^\top
-            +
-            \mu \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top
-            +
-            \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top
-        }{
-            \left(1 + \frac{1}{\mu K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^2
-        }
-        \right]
-    - \mathbf{J}_K
-    \quad.
-\end{align}
-%
-The denominator in the expression above makes direct evaluation of the expectation
-intractable. As long as
-$\big| \frac{1}{\mu K}\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u} \big| < 1$, we
-can Taylor expand the covariance as
-%
-\begin{align}
-    \label{eq:SigmaTildeExp}
-    \tilde{\pmb{\Sigma}}
-     & =
-    \frac{1}{\mu^2}
-    \mathbb{E}\left[
-        \Bigg(
-        \mu^2 \mathbf{J}_K
-        +
-        \mu \, \mathbf{j}_K\mathbf{u}^\top \mathbf{L}^\top
-        +
-        \mu \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top
-        +
-        \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top
-        \Bigg)
-        \left(
-        \sum\limits_{n=0}^\infty
-        (-1)^n (n + 1) z^n
-        \right)
-        \right]
-    - \mathbf{J}_K
+    \mu + \frac{1}{K}\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}
+    \nonumber                                               \\
+            & = \mu(1 + z)
     \quad,
 \end{align}
 %
-where we define the scalar quantity
+where we define the quantity
 %
 \begin{align}
     z \equiv \frac{1}{\mu K}\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}
     \quad.
 \end{align}
 %
-In the Appendix, we show that this expression may be written as
-the infinite series
+Plugging this in and rearranging, we obtain
 %
 \begin{align}
+    \label{eq:SigmaPQR}
     \tilde{\pmb{\Sigma}}
      & =
-    \frac{1}{\mu^2} \pmb{\Sigma}
+    \mathbf{P}
+    -
+    \frac{1}{\mu}
+    \left(
+    \mathbf{Q}
     +
-    \sum\limits_{n=1}^\infty
-    \frac{(-1)^n(n + 1)}{\mu^{n + 2}}
+    \mathbf{Q}^\top
+    \right)
+    +
+    \frac{1}{\mu^2}
+    \mathbf{R}
+    \quad,
+\end{align}
+%
+where we define the matrices
+%
+\begin{align}
+    %
+    \label{eq:Pexact}
+    \mathbf{P} & \equiv
+    \mathbb{E}\Big[
+        \frac{z^2 \, \mathbf{J}_K}{(1 + z)^2}
+        \Big]
+    %
+    \\[0.5em]
+    %
+    \label{eq:Qexact}
+    \mathbf{Q} & \equiv
+    \mathbb{E}\left[
+        \frac{z\, \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top}{(1 + z)^2}
+        \right]
+    %
+    \\[0.5em]
+    %
+    \label{eq:Rexact}
+    \mathbf{R} & \equiv
+    \mathbb{E}\left[
+        \frac{ \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top}{(1 + z)^2}
+        \right]
+\end{align}
+%
+The denominator in the expressions above makes direct evaluation of the expectations
+intractable. As long as
+$\big|z| < 1$, we can Taylor expand the matrices as
+%
+\begin{align}
+    \mathbf{P}
+     & =
+    \sum\limits_{n=0}^\infty
+    (-1)^n (n + 1)
     \,
-    \pmb{\Lambda}_n
-    \quad.
+    \mathbb{E}\left[
+        z^{n + 2}
+        \,
+        \mathbf{J}_K
+        \right]
+    \\[0.5em]
+    \mathbf{Q}
+     & =
+    \sum\limits_{n=0}^\infty
+    (-1)^n (n + 1)
+    \,
+    \mathbb{E}\left[
+        z^{n + 1} \,
+        \mathbf{L}
+        \,
+        \mathbf{u}
+        \,
+        \mathbf{j}_K^\top
+        \right]
+    \\[0.5em]
+    \mathbf{R}
+     & =
+    \sum\limits_{n=0}^\infty
+    (-1)^n (n + 1)
+    \,
+    \mathbb{E}\left[
+        z^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
+        \right]
+\end{align}
+%
+In the Appendix, we show that these may be computed from
+%
+\begin{align}
+    \mathbb{E}\left[
+        z^{n + 2} \, \mathbf{J}_K
+        \right]
+     & =
+    (n + 1) g_{n} \, \bar{\Sigma}^\frac{n+2}{2} \, \mathbf{J}_K
+    \\[0.5em]
+    \mathbb{E}\left[
+        z^{n + 1} \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top
+        \right]
+     & =
+    (n + 1) K \, g_{n} \, \mathbf{S}^\frac{n+2}{2}
+    \\[0.5em]
+    \mathbb{E}\left[
+        z^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
+        \right]
+     & =
+    n \, g_{n} \, \mathbf{S}^\frac{n}{2}\pmb{\Sigma} + g_{n} \, \bar{\Sigma}^\frac{n}{2} \pmb{\Sigma}
 \end{align}
 %
 where we define
 %
 \begin{align}
-    \pmb{\Lambda}_n
+    g_n
      & \equiv
-    g_n \, \bar{\Sigma}^\frac{n}{2} \, (\pmb{\Sigma} + \mu^2\mathbf{J}_K)
-    \, +
-    K g_{n+1} \mu  \,
-    \left(
-    \mathbf{S}^\frac{n + 1}{2}
-    +
-    {\mathbf{S}^\top}^\frac{n + 1}{2}
-    \right)
-    \, +
-    n g_n \, \mathbf{S}^\frac{n}{2}\pmb{\Sigma}
+    \begin{cases}
+        \dfrac{n!}{2^\frac{n}{2} \left(\frac{n}{2}\right)!} & n \, \mathrm{even}
+        \\
+        0                                                   & n \, \mathrm{odd}
+        \quad,
+    \end{cases}
 \end{align}
-%
-and
 %
 \begin{align}
     \mathbf{S}
      & \equiv
     \frac{1}{K^2} \pmb{\Sigma} \, \mathbf{J}_K
+    \quad,
 \end{align}
 %
-where $\bar{\Sigma}$ is the average of all the elements in $\pmb{\Sigma}$ and
+and $\bar{\Sigma}$ is the average of all the elements in $\pmb{\Sigma}$.
+%
+Inserting these expressions into Equation~(\ref{eq:SigmaPQR}), we obtain
 %
 \begin{align}
-    g_n
+    \tilde{\pmb{\Sigma}}
      & =
-    \begin{cases}
-        \dfrac{n!}{2^\frac{n}{2} \left(\frac{n}{2}\right)!} & n \, \mathrm{even}
-        \\
-        0                                                   & n \, \mathrm{odd}
-        \quad.
-    \end{cases}
+    \resizebox{.85\hsize}{!}{$
+            \sum\limits_{n=0}^\infty
+            (-1)^n (n + 1)^2 g_n
+            \left(
+            \bar{\Sigma}^\frac{n+2}{2} \mathbf{J}_K
+            -
+            \frac{K}{\mu}\left( \mathbf{S}^\frac{n+2}{2} + {\mathbf{S}^\top}^\frac{n+2}{2} \right)
+            +
+            \frac{n}{(n+1)\mu^2}
+            \left(
+            \mathbf{S}^\frac{n}{2} \mathbf{\Sigma}
+            +
+            \bar{\Sigma}^\frac{n}{2} \mathbf{I}_K
+            \right)
+            \mathbf{\Sigma}
+            \right)
+        $}
+    \quad.
 \end{align}
+%
 %
 The convergence criterion for this series may be written
 %
 \begin{align}
-    \pmb{E}\big[|z|\big] < 1
+    \mathbb{E}\big[|z|\big] < 1
 \end{align}
 %
 or, equivalently,
 %
 \begin{align}
-    \pmb{E}\big[z^2\big] &< 1
-    \nonumber \\
-    \frac{\bar{\Sigma}}{\mu^2} &< 1
+    \mathbb{E}\big[z^2\big]    & < 1
+    \nonumber                        \\
+    \frac{\bar{\Sigma}}{\mu^2} & < 1
     \quad.
 \end{align}
 %
@@ -287,6 +373,8 @@ or, equivalently,
 \clearpage
 
 \appendix
+
+\xxx{THIS ALL NEEDS TO BE REWRITTEN!}
 
 \section{Computing $\tilde{\pmb{\Sigma}}$}
 %

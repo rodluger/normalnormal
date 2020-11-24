@@ -39,7 +39,7 @@ def uprod(*idx):
         raise NotImplementedError("Case not implemented.")
 
 
-def norm_cov(mu, Sig, N=10):
+def norm_cov(mu, Sig, N=20):
     K = Sig.shape[0]
     J = np.ones((K, K))
     barSig = np.mean(Sig)
@@ -47,28 +47,22 @@ def norm_cov(mu, Sig, N=10):
     # Powers of S
     S = (Sig @ J) / K ** 2
     Spow = [np.eye(K)]
-    for n in range((N + 1) // 2):
+    for n in range((N + 2) // 2):
         Spow.append(Spow[-1] @ S)
 
-    # Zeroth order
-    norm_cov = Sig / mu ** 2
-
-    # Higher order
-    for n in range(1, N + 1):
-
-        if n % 2 == 0:
-
-            # Even correction
-            Lambda_n = (
-                g(n) * barSig ** (n // 2) * (Sig + mu ** 2 * J)
-                + n * g(n) * Spow[n // 2] @ Sig
+    # Series solution
+    norm_cov = np.zeros_like(Sig)
+    for n in range(0, N + 1, 2):
+        norm_cov += (
+            (-1) ** n
+            * (n + 1) ** 2
+            * g(n)
+            * (
+                barSig ** ((n + 2) // 2) * J
+                - K / mu * (Spow[(n + 2) // 2] + Spow[(n + 2) // 2].T)
+                + n / ((n + 1) * mu ** 2) * Spow[n // 2] @ Sig
+                + barSig ** (n // 2) / ((n + 1) * mu ** 2) * Sig
             )
-
-        else:
-
-            # Odd correction
-            Lambda_n = (K * g(n + 1) * mu) * (Spow[(n + 1) // 2] + Spow[(n + 1) // 2].T)
-
-        norm_cov += (-1) ** n * (n + 1) / mu ** (2 + n) * Lambda_n
+        )
 
     return norm_cov
