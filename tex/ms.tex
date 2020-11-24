@@ -291,19 +291,21 @@ In the Appendix, we show that these may be computed from
         z^{n + 2} \, \mathbf{J}_K
         \right]
      & =
-    (n + 1) g_{n} \, \bar{\Sigma}^\frac{n+2}{2} \, \mathbf{J}_K
+    \frac{(n + 1) g_{n}}{\mu^{n+2}} \, \bar{\Sigma}^\frac{n+2}{2} \, \mathbf{J}_K
     \\[0.5em]
     \mathbb{E}\left[
         z^{n + 1} \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top
         \right]
      & =
-    (n + 1) K \, g_{n} \, \mathbf{S}^\frac{n+2}{2}
+    \frac{(n + 1) K \, g_{n}}{\mu^{n+1}} \, \mathbf{S}^\frac{n+2}{2}
     \\[0.5em]
     \mathbb{E}\left[
         z^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
         \right]
      & =
-    n \, g_{n} \, \mathbf{S}^\frac{n}{2}\pmb{\Sigma} + g_{n} \, \bar{\Sigma}^\frac{n}{2} \pmb{\Sigma}
+    \frac{g_n}{\mu^n} \left(
+    n \, \mathbf{S}^\frac{n}{2}\pmb{\Sigma} + \bar{\Sigma}^\frac{n}{2} \pmb{\Sigma}
+    \right)
 \end{align}
 %
 where we define
@@ -334,16 +336,17 @@ Inserting these expressions into Equation~(\ref{eq:SigmaPQR}), we obtain
     \tilde{\pmb{\Sigma}}
      & =
     \resizebox{.85\hsize}{!}{$
+            \frac{1}{\mu^2}
             \sum\limits_{n=0}^\infty
-            (-1)^n (n + 1)^2 g_n
+            \frac{(-1)^n (n + 1)^2 g_n}{\mu^n}
             \left(
             \bar{\Sigma}^\frac{n+2}{2} \mathbf{J}_K
             -
-            \frac{K}{\mu}\left( \mathbf{S}^\frac{n+2}{2} + {\mathbf{S}^\top}^\frac{n+2}{2} \right)
+            K \left( \mathbf{S}^\frac{n+2}{2} + {\mathbf{S}^\top}^\frac{n+2}{2} \right)
             +
-            \frac{n}{(n+1)\mu^2}
+            \frac{n}{(n+1)}
             \left(
-            \mathbf{S}^\frac{n}{2} \mathbf{\Sigma}
+            \mathbf{S}^\frac{n}{2}
             +
             \bar{\Sigma}^\frac{n}{2} \mathbf{I}_K
             \right)
