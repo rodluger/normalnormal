@@ -50,19 +50,18 @@ def norm_cov(mu, Sig, N=20):
     for n in range((N + 2) // 2):
         Spow.append(Spow[-1] @ S)
 
-    # Series solution
     norm_cov = np.zeros_like(Sig)
     for n in range(0, N + 1, 2):
-        norm_cov += (
-            (-1) ** n
-            * (n + 1) ** 2
-            * g(n)
-            * (
-                barSig ** ((n + 2) // 2) * J
-                - K / mu * (Spow[(n + 2) // 2] + Spow[(n + 2) // 2].T)
-                + n / ((n + 1) * mu ** 2) * Spow[n // 2] @ Sig
-                + barSig ** (n // 2) / ((n + 1) * mu ** 2) * Sig
-            )
-        )
+
+        EP = (n + 1) * g(n) * barSig ** ((n + 2) // 2) * J
+        P = (-1) ** n * (n + 1) * EP
+
+        EQ = (n + 1) * K * g(n) * Spow[(n + 2) // 2]
+        Q = (-1) ** n * (n + 1) * EQ
+
+        ER = n * g(n) * Spow[n // 2] @ Sig + g(n) * barSig ** (n // 2) * Sig
+        R = (-1) ** n * (n + 1) * ER
+
+        norm_cov += (P - (Q + Q.T) + R) / (mu ** (n + 2))
 
     return norm_cov
