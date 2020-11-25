@@ -44,10 +44,10 @@ and covariance $\pmb{\Sigma}$:
 For simplicity, let us assume the mean is constant, i.e.,
 %
 \begin{align}
-    \pmb{\mu} = \mu \, \mathbf{j}_K
+    \pmb{\mu} = \mu \, \mathbf{j}
 \end{align}
 %
-where $\mathbf{j}_K$ is the vector of $K$ ones.
+where $\mathbf{j}$ is the vector of $K$ ones.
 %
 Now suppose we cannot observe samples of $\mathbf{x}$ directly, but instead we can
 observe samples from the \emph{normalized} process, which we will call
@@ -56,8 +56,8 @@ $\tilde{\mathbf{x}}$:
 \begin{align}
     \tilde{\mathbf{x}}
      & \equiv \frac{\mathbf{x}}{\bar{x}}
-    \nonumber                                                      \\[0.5em]
-     & = \frac{\mathbf{x}}{\frac{1}{K}\sum\limits_{k=0}^{K-1} x_k}
+    \nonumber                                                    \\[0.5em]
+     & = \frac{\mathbf{x}}{\frac{1}{K}\sum\limits_{k=0}^{K-1} x}
     \quad.
 \end{align}
 %
@@ -73,7 +73,7 @@ and covariance of $\tilde{\mathbf{x}}$ be $\tilde{\pmb{\mu}}$ and $\tilde{\pmb{\
 By definition, the mean is unity, i.e,
 %
 \begin{align}
-    \tilde{\pmb{\mu}} = \mathbf{j}_K
+    \tilde{\pmb{\mu}} = \mathbf{j}
     \quad.
 \end{align}
 %
@@ -90,19 +90,19 @@ The covariance is given by
     \nonumber \\[0.5em]
      & =
     \mathbb{E}\left[
-        \left(\frac{\mathbf{x}}{\bar{x}} - \mathbf{j}_K\right)
-        \left(\frac{\mathbf{x}}{\bar{x}} - \mathbf{j}_K\right)^\top
+        \left(\frac{\mathbf{x}}{\bar{x}} - \mathbf{j}\right)
+        \left(\frac{\mathbf{x}}{\bar{x}} - \mathbf{j}\right)^\top
         \right]
     \nonumber \\[0.5em]
      & =
     \mathbb{E}\left[
         \frac{\mathbf{x}\mathbf{x}^\top}{\bar{x}^2}
         -
-        \frac{\mathbf{x}\,\mathbf{j}_K^\top}{\bar{x}}
+        \frac{\mathbf{x}\,\mathbf{j}^\top}{\bar{x}}
         -
-        \frac{\mathbf{j}\,\mathbf{x}_K^\top}{\bar{x}}
+        \frac{\mathbf{j}\,\mathbf{x}^\top}{\bar{x}}
         +
-        \mathbf{J}_K
+        \mathbf{j} \, \mathbf{j}^\top
         \right]
     \nonumber \\[0.5em]
      & =
@@ -111,18 +111,17 @@ The covariance is given by
         \right]
     -
     \mathbb{E}\left[
-        \frac{\mathbf{x}\,\mathbf{j}_K^\top}{\bar{x}}
+        \frac{\mathbf{x}\,\mathbf{j}^\top}{\bar{x}}
         \right]
     -
     \mathbb{E}\left[
-        \frac{\mathbf{j}_K\,\mathbf{x}^\top}{\bar{x}}
+        \frac{\mathbf{j}\,\mathbf{x}^\top}{\bar{x}}
         \right]
     +
-    \mathbf{J}_K
-    \quad,
+    \mathbf{j} \, \mathbf{j}^\top
+    \quad.
 \end{align}
 %
-where $\mathbf{J}_K = \mathbf{j}_K \mathbf{j}_K^\top$ is the $K\times K$ matrix of ones.
 To evaluate this, it is convenient to write
 %
 \begin{align}
@@ -140,11 +139,11 @@ i.e.,
 and $\mathbf{u}$ is a standard multivariate normal random variable,
 %
 \begin{align}
-    \mathbf{u} \sim \mathcal{N}\left( 0, \mathbf{I}_K \right)
+    \mathbf{u} \sim \mathcal{N}\left( 0, \mathbf{I} \right)
     \quad,
 \end{align}
 %
-where $\mathbf{I}_K$ is the
+where $\mathbf{I}$ is the
 $K \times K$ identity matrix.
 The expression for the covariance $\tilde{\pmb{\Sigma}}$ may now be written
 %
@@ -162,7 +161,7 @@ The expression for the covariance $\tilde{\pmb{\Sigma}}$ may now be written
     -
     \mathbb{E}\left[
         \frac{
-            (\pmb{\mu} + \mathbf{L} \mathbf{u})\mathbf{j}_K^\top
+            (\pmb{\mu} + \mathbf{L} \mathbf{u})\mathbf{j}^\top
         }{
             \bar{x}
         }
@@ -170,13 +169,13 @@ The expression for the covariance $\tilde{\pmb{\Sigma}}$ may now be written
     -
     \mathbb{E}\left[
         \frac{
-            \mathbf{j}_K(\pmb{\mu} + \mathbf{L} \mathbf{u})^\top
+            \mathbf{j}(\pmb{\mu} + \mathbf{L} \mathbf{u})^\top
         }{
             \bar{x}
         }
         \right]
     +
-    \mathbf{J}_K
+    \mathbf{j} \, \mathbf{j}^\top
 \end{align}
 %
 The mean $\bar{x}$ is
@@ -185,7 +184,7 @@ The mean $\bar{x}$ is
     \bar{x} & = \sum\limits_{j=0}^{K-1}(\mu_j + L_{i,j}u_j)
     \nonumber                                               \\
             & =
-    \mu + \frac{1}{K}\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}
+    \mu + \frac{1}{K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}
     \nonumber                                               \\
             & = \mu(1 + z)
     \quad,
@@ -194,7 +193,7 @@ The mean $\bar{x}$ is
 where we define the quantity
 %
 \begin{align}
-    z \equiv \frac{1}{\mu K}\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}
+    z \equiv \frac{1}{\mu K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}
     \quad.
 \end{align}
 %
@@ -225,7 +224,7 @@ where we define the matrices
     \label{eq:Pexact}
     \mathbf{P} & \equiv
     \mathbb{E}\Big[
-        \frac{z^2 \, \mathbf{J}_K}{(1 + z)^2}
+        \frac{z^2 \, \mathbf{j} \, \mathbf{j}^\top}{(1 + z)^2}
         \Big]
     %
     \\[0.5em]
@@ -233,7 +232,7 @@ where we define the matrices
     \label{eq:Qexact}
     \mathbf{Q} & \equiv
     \mathbb{E}\left[
-        \frac{z\, \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top}{(1 + z)^2}
+        \frac{z\, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top}{(1 + z)^2}
         \right]
     %
     \\[0.5em]
@@ -246,8 +245,8 @@ where we define the matrices
 \end{align}
 %
 The denominator in the expressions above makes direct evaluation of the expectations
-intractable. As long as
-$\big|z| < 1$, we can Taylor expand the matrices as
+intractable. Provided
+$\big|z| < 1$ (an assumption we'll revisit below), we can Taylor expand the matrices as
 %
 \begin{align}
     \mathbf{P}
@@ -258,7 +257,7 @@ $\big|z| < 1$, we can Taylor expand the matrices as
     \mathbb{E}\left[
         z^{n + 2}
         \,
-        \mathbf{J}_K
+        \mathbf{j} \, \mathbf{j}^\top
         \right]
     \\[0.5em]
     \mathbf{Q}
@@ -272,7 +271,7 @@ $\big|z| < 1$, we can Taylor expand the matrices as
         \,
         \mathbf{u}
         \,
-        \mathbf{j}_K^\top
+        \mathbf{j}^\top
         \right]
     \\[0.5em]
     \mathbf{R}
@@ -285,31 +284,31 @@ $\big|z| < 1$, we can Taylor expand the matrices as
         \right]
 \end{align}
 %
-In the Appendix, we show that these may be computed from
+In the Appendix, we show that the expecations in the expressions above may be computed from
 %
 \begin{align}
     \mathbb{E}\left[
-        z^{n + 2} \, \mathbf{J}_K
+        z^{n + 2} \, \mathbf{j} \, \mathbf{j}^\top
         \right]
      & =
-    \frac{(n + 1) g_{n}}{\mu^{n+2}} \, \bar{\Sigma}^\frac{n+2}{2} \, \mathbf{J}_K
+    \frac{(n + 1) g_{n} \bar{\sigma}^\frac{n+2}{2}}{\mu^{n+2}} \, \mathbf{j} \, \mathbf{j}^\top
     \\[0.5em]
     \mathbb{E}\left[
-        z^{n + 1} \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top
+        z^{n + 1} \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top
         \right]
      & =
-    \frac{(n + 1) K \, g_{n}}{\mu^{n+1}} \, \mathbf{S}^\frac{n+2}{2}
+    \frac{(n + 1) K \, g_{n} \bar{\sigma}^\frac{n}{2}}{\mu^{n+1}} \, \bar{\pmb{\sigma}} \, \mathbf{j}^\top
     \\[0.5em]
     \mathbb{E}\left[
         z^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
         \right]
      & =
     \frac{g_n}{\mu^n} \left(
-    n \, \mathbf{S}^\frac{n}{2}\pmb{\Sigma} + \bar{\Sigma}^\frac{n}{2} \pmb{\Sigma}
+    n \,  \bar{\sigma}^\frac{n - 2}{2} \bar{\pmb{\sigma}} \, \bar{\pmb{\sigma}}^\top + \bar{\sigma}^\frac{n}{2} \pmb{\Sigma}
     \right)
 \end{align}
 %
-where we define
+where
 %
 \begin{align}
     g_n
@@ -322,59 +321,66 @@ where we define
     \end{cases}
 \end{align}
 %
+is the expression for the $n^\mathrm{th}$ moment of the standard normal distribution,
+%
 \begin{align}
-    \mathbf{S}
+    \bar{\pmb{\sigma}}
      & \equiv
-    \frac{1}{K^2} \pmb{\Sigma} \, \mathbf{J}_K
-    \quad,
+    \frac{1}{K} \pmb{\Sigma} \, \mathbf{j}
 \end{align}
 %
-and $\bar{\Sigma}$ is the average of all the elements in $\pmb{\Sigma}$.
+is the average of each row in $\pmb{\Sigma}$, and
 %
-Inserting these expressions into Equation~(\ref{eq:SigmaPQR}), we obtain
+\begin{align}
+    \bar{\sigma}
+     & \equiv
+    \frac{1}{K^2} \mathbf{j}^\top \pmb{\Sigma} \, \mathbf{j}
+\end{align}
+%
+is the average of all the elements in $\pmb{\Sigma}$.
+%
+Inserting these expressions into Equation~(\ref{eq:SigmaPQR}) and rearranging, we obtain
 %
 \begin{align}
     \tilde{\pmb{\Sigma}}
      & =
-    \resizebox{.85\hsize}{!}{$
-            \frac{1}{\mu^2}
-            \sum\limits_{n=0}^\infty
-            \frac{(-1)^n (n + 1)^2 g_n}{\mu^n}
-            \left(
-            \bar{\Sigma}^\frac{n+2}{2} \mathbf{J}_K
-            -
-            K \left( \mathbf{S}^\frac{n+2}{2} + {\mathbf{S}^\top}^\frac{n+2}{2} \right)
-            +
-            \frac{1}{(n+1)}
-            \left(
-            n \mathbf{S}^\frac{n}{2}
-            +
-            \bar{\Sigma}^\frac{n}{2} \mathbf{I}_K
-            \right)
-            \mathbf{\Sigma}
-            \right)
-        $}
-    \quad.
+    \frac{\alpha \, \pmb{\Sigma}}{\mu^2}  +
+    \frac{\alpha \, \left(\mathbf{s} \, \mathbf{s}^\top - \bar{\pmb{\sigma}} \, \bar{\pmb{\sigma}}^\top\right)}{\mu^2 \bar{\sigma}}  +
+    \frac{\beta \, \left(\mathbf{s} \, \mathbf{s}^\top\right)}{\mu^2 \bar{\sigma}}
 \end{align}
 %
-%
-The convergence criterion for this series may be written
+where
 %
 \begin{align}
-    \mathbb{E}\big[|z|\big] < 1
+    \mathbf{s}
+     & \equiv
+    \bar{\sigma} \, \mathbf{j} - \bar{\pmb{\sigma}}
 \end{align}
 %
-or, equivalently,
+and
 %
 \begin{align}
-    \mathbb{E}\big[z^2\big] & < 1
-    \quad.
+    \alpha
+     & \equiv
+    \sum\limits_{n=0}^N
+    \frac{(2n + 1)!}{2^n \, n!}
+    \left(
+    \frac{\bar{\sigma}}{\mu^2}
+    \right)^n
+    \\[1em]
+    \beta
+     & \equiv
+    \sum\limits_{n=0}^N
+    \frac{2n(2n + 1)!}{2^n \, n!}
+    \left(
+    \frac{\bar{\sigma}}{\mu^2}
+    \right)^n
 \end{align}
 %
-However, the quantity $z^2$ is a random variable, equal to the square of
-the weighted sum of $K$ standard normal random variables. The series therefore
-converges only if $z^2 < 1$ for \emph{all possible values} of $z^2$, a condition
-that is never strictly met except in the trivial case $\pmb{\Sigma} = \mathbf{0}$.
+
+\xxx{...}
+
+This series is divergent!
 This may be understood intuitively: given a (very) large number of draws from
 a Gaussian process, one of the draws will eventually correspond to a value of
 $\mathbf{x}$ whose
@@ -383,11 +389,10 @@ expectations in Equation~(\ref{eq:SigmaTildeExp}) diverge.
 
 While this is true for any
 $\mu$ and $\pmb{\Sigma} \ne \mathbf{0}$, in practice the probability of
-drawing $\bar{x} \approx 0$ is vanishingly small provided the expectation of
-$z^2$ is small, a condition that may be expressed as
+drawing $\bar{x} \approx 0$ is vanishingly small provided that
 %
 \begin{align}
-    \frac{\bar{\Sigma}}{\mu^2} \ll 1
+    \frac{\bar{\sigma}}{\mu^2} \ll 1
     \quad.
 \end{align}
 %
@@ -416,16 +421,16 @@ asymptotically approaches the expression derived above.
         \mathbb{E}\left[
             z^n
             \Bigg(
-            \mu^2 \mathbf{J}_K
+            \mu^2 \mathbf{j} \, \mathbf{j}^\top
             +
-            \mu \, \mathbf{j}_K\mathbf{u}^\top \mathbf{L}^\top
+            \mu \, \mathbf{j}\mathbf{u}^\top \mathbf{L}^\top
             +
-            \mu \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top
+            \mu \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top
             +
             \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top
             \Bigg)
             \right]
-        - \mathbf{J}_K
+        - \mathbf{j} \, \mathbf{j}^\top
         \nonumber \\[0.5em]
          & =
         \sum\limits_{n=0}^\infty
@@ -440,18 +445,18 @@ asymptotically approaches the expression derived above.
         +
         \mathbf{R}_n
         \right)
-        - \mathbf{J}_K
+        - \mathbf{j} \, \mathbf{j}^\top
         \quad,
     \end{align}
     %
     where we define the matrices
     %
     \begin{align}
-        \mathbf{P}_n & \equiv \frac{(n + 1)}{K^n}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^n \mathbf{J}_K \right]
-        \nonumber                                                                                                                                                                                  \\[0.5em]
-        \mathbf{Q}_n & \equiv \frac{(n + 1)}{K^n}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^n \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top \right]
-        \nonumber                                                                                                                                                                                  \\[0.5em]
-        \mathbf{R}_n & \equiv \frac{(n + 1)}{K^n}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^n \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top \right]
+        \mathbf{P}_n & \equiv \frac{(n + 1)}{K^n}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^n \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                \\[0.5em]
+        \mathbf{Q}_n & \equiv \frac{(n + 1)}{K^n}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^n \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                \\[0.5em]
+        \mathbf{R}_n & \equiv \frac{(n + 1)}{K^n}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^n \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top \right]
         \quad.
     \end{align}
     %
@@ -481,13 +486,13 @@ asymptotically approaches the expression derived above.
     of products of the components of a random standard normal vector $\mathbf{u}$:
     %
     \begin{align}
-        \mathbb{E}\left[u_i \right]                    & = 0
+        \mathbb{E}\left[u_i \right]                  & = 0
         \\[1em]
-        \mathbb{E}\left[u_i u_j\right]                 & = g_2
+        \mathbb{E}\left[u_i u_j\right]               & = g_2
         \\[1em]
-        \mathbb{E}\left[u_i u_j u_k\right]             & = 0
+        \mathbb{E}\left[u_i u_j u\right]             & = 0
         \\[1em]
-        \mathbb{E}\left[u_i u_j u_k u_l\right]         & =
+        \mathbb{E}\left[u_i u_j u u_l\right]         & =
         g_4 \, \delta_{i, j} \delta_{k, l} \, \delta_{i, k}
         +
         g_2^2 \left(
@@ -498,9 +503,9 @@ asymptotically approaches the expression derived above.
         \delta_{i, l} \, \delta_{j, k} \, \bar{\delta}_{i, j}
         \right)
         \\[1em]
-        \mathbb{E}\left[u_i u_j u_k u_l u_m\right]     & = 0
+        \mathbb{E}\left[u_i u_j u u_l u_m\right]     & = 0
         \\[1em]
-        \mathbb{E}\left[u_i u_j u_k u_l u_m u_n\right] & =
+        \mathbb{E}\left[u_i u_j u u_l u_m u_n\right] & =
         ...
         \quad,
     \end{align}
@@ -512,56 +517,56 @@ asymptotically approaches the expression derived above.
     Let us begin by computing the first several terms in $\mathbf{P}$.
     %
     \begin{align}
-        \mathbf{P}_0 & = \mathbb{E}\left[ \mathbf{J}_K \right]
-        \nonumber                                              \\
-                     & = \mathbf{J}_K
+        \mathbf{P}_0 & = \mathbb{E}\left[ \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                               \\
+                     & = \mathbf{j} \, \mathbf{j}^\top
     \end{align}
     %
-    since $\mathbf{J}_K$ is constant. Next,
+    since $\mathbf{j} \, \mathbf{j}^\top$ is constant. Next,
     %
     \begin{align}
-        \mathbf{P}_1 & = \frac{2}{K}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right) \mathbf{J}_K \right]
-        \nonumber                                                                                                                 \\
-                     & = \frac{2}{K}\left(\mathbf{j}_K^\top \mathbf{L} \, \mathbb{E}\left[ \mathbf{u} \right]\right) \mathbf{J}_K
-        \nonumber                                                                                                                 \\
+        \mathbf{P}_1 & = \frac{2}{K}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right) \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                \\
+                     & = \frac{2}{K}\left(\mathbf{j}^\top \mathbf{L} \, \mathbb{E}\left[ \mathbf{u} \right]\right) \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                \\
                      & = \mathbf{0}
     \end{align}
     %
     since $\mathbb{E}\left[ \mathbf{u} \right] = \mathbf{0}$. The next term is
     %
     \begin{align}
-        \mathbf{P}_2 & = \frac{3}{K^2}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^2 \mathbf{J}_K \right]
-        \nonumber                                                                                                                                                                      \\
-                     & = \frac{3}{K^2}\mathbb{E}\left[\left(\mathbf{j}_K^\top \mathbf{L} \,  \mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j}_K \right)  \mathbf{J}_K \right]
-        \nonumber                                                                                                                                                                      \\
-                     & = \frac{3}{K^2}\left(\mathbf{j}_K^\top \mathbf{L} \, \mathbb{E}\left[ \mathbf{u} \mathbf{u}^\top \right] \mathbf{L}^\top \, \mathbf{j}_K \right)  \mathbf{J}_K
-        \nonumber                                                                                                                                                                      \\
-                     & = \frac{3}{K^2}\left(\mathbf{j}_K^\top \mathbf{L} \mathbf{L}^\top \, \mathbf{j}_K \right)  \mathbf{J}_K
-        \nonumber                                                                                                                                                                      \\
-                     & = \frac{3}{K^2}\mathrm{sum}(\mathbf{\Sigma}) \mathbf{J}_K
-        \nonumber                                                                                                                                                                      \\
-                     & = 3 \, \bar{\Sigma} \, \mathbf{J}_K
+        \mathbf{P}_2 & = \frac{3}{K^2}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^2 \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                   \\
+                     & = \frac{3}{K^2}\mathbb{E}\left[\left(\mathbf{j}^\top \mathbf{L} \,  \mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j} \right)  \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                   \\
+                     & = \frac{3}{K^2}\left(\mathbf{j}^\top \mathbf{L} \, \mathbb{E}\left[ \mathbf{u} \mathbf{u}^\top \right] \mathbf{L}^\top \, \mathbf{j} \right)  \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                                                                   \\
+                     & = \frac{3}{K^2}\left(\mathbf{j}^\top \mathbf{L} \mathbf{L}^\top \, \mathbf{j} \right)  \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                                                                   \\
+                     & = \frac{3}{K^2}\mathrm{sum}(\mathbf{\Sigma}) \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                                                                   \\
+                     & = 3 \, \bar{\sigma} \, \mathbf{j} \, \mathbf{j}^\top
     \end{align}
     %
-    where $\bar{\Sigma}$ is the average of all entries in $\pmb{\Sigma}$ and
-    we made use of the fact that $\mathbb{E}\left[ \mathbf{u} \mathbf{u}^\top\right] = \mathbf{I}_K$.
+    where $\bar{\sigma}$ is the average of all entries in $\pmb{\Sigma}$ and
+    we made use of the fact that $\mathbb{E}\left[ \mathbf{u} \mathbf{u}^\top\right] = \mathbf{I}$.
     %
     Next,
     %
     \begin{align}
-        \mathbf{P}_3 & = \frac{4}{K^3}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^3 \mathbf{J}_K \right]
-        \nonumber                                                                                                                                                                                                                    \\
-                     & = \frac{4}{K^3}\mathbb{E}\left[\left(\mathbf{j}_K^\top \mathbf{L} \,  \mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j}_K \, \mathbf{j}_K^\top \mathbf{L} \,  \mathbf{u} \right) \mathbf{J}_K \right]
-        \nonumber                                                                                                                                                                                                                    \\
-                     & = \frac{4}{K^3}\left(\mathbf{j}_K^\top \mathbf{L} \,  \mathbb{E}\left[\mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{J}_K \mathbf{L} \,  \mathbf{u}\right] \right) \mathbf{J}_K
-        \nonumber                                                                                                                                                                                                                    \\
+        \mathbf{P}_3 & = \frac{4}{K^3}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^3 \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                                                               \\
+                     & = \frac{4}{K^3}\mathbb{E}\left[\left(\mathbf{j}^\top \mathbf{L} \,  \mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j} \, \mathbf{j}^\top \mathbf{L} \,  \mathbf{u} \right) \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                                                               \\
+                     & = \frac{4}{K^3}\left(\mathbf{j}^\top \mathbf{L} \,  \mathbb{E}\left[\mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j} \, \mathbf{j}^\top \mathbf{L} \,  \mathbf{u}\right] \right) \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                                                                                                               \\
                      & = \mathbf{0}
     \end{align}
     %
     where we made use of the fact that we may write the component at index $i$ of the vector within the expectation in the next-to-last line
     as
     \begin{align}
-        \mathbb{E}\left[\mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{J}_K \mathbf{L} \,  \mathbf{u}\right]_{i} = \sum\limits_{k,l}(\mathbf{L}^\top \mathbf{J}_K \mathbf{L})_{kl} u_i u_k u_l = 0
+        \mathbb{E}\left[\mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j} \, \mathbf{j}^\top \mathbf{L} \,  \mathbf{u}\right]_{i} = \sum\limits_{k,l}(\mathbf{L}^\top \mathbf{j} \, \mathbf{j}^\top \mathbf{L})_{kl} u_i u u_l = 0
         \quad,
         \nonumber
     \end{align}
@@ -570,11 +575,11 @@ asymptotically approaches the expression derived above.
     Finally,
     %
     \begin{align}
-        \mathbf{P}_4 & = \frac{5}{K^4}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^4 \mathbf{J}_K \right]
-        \nonumber                                                                                                                                                                                                                                                                        \\
-                     & = \frac{5}{K^4}\mathbb{E}\left[\left(\mathbf{j}_K^\top \mathbf{L} \,  \mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j}_K \, \mathbf{j}_K^\top \mathbf{L} \,  \mathbf{u} \, \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j}_K \right) \mathbf{J}_K \right]
-        \nonumber                                                                                                                                                                                                                                                                        \\
-                     & = \frac{5}{K^4}\left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{E} \, \mathbf{L}^\top \, \mathbf{j}_K \right) \mathbf{J}_K
+        \mathbf{P}_4 & = \frac{5}{K^4}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^4 \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                                                                                                                 \\
+                     & = \frac{5}{K^4}\mathbb{E}\left[\left(\mathbf{j}^\top \mathbf{L} \,  \mathbf{u} \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j} \, \mathbf{j}^\top \mathbf{L} \,  \mathbf{u} \, \mathbf{u}^\top  \mathbf{L}^\top \, \mathbf{j} \right) \mathbf{j} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                                                                                                                 \\
+                     & = \frac{5}{K^4}\left(\mathbf{j}^\top \mathbf{L} \, \mathbf{E} \, \mathbf{L}^\top \, \mathbf{j} \right) \mathbf{j} \, \mathbf{j}^\top
         \quad,
     \end{align}
     %
@@ -587,7 +592,7 @@ asymptotically approaches the expression derived above.
     and
     %
     \begin{align}
-        \mathbf{A} \equiv \mathbf{L}^\top \, \mathbf{J}_K \, \mathbf{L}
+        \mathbf{A} \equiv \mathbf{L}^\top \, \mathbf{j} \, \mathbf{j}^\top \, \mathbf{L}
         \quad.
     \end{align}
     %
@@ -595,7 +600,7 @@ asymptotically approaches the expression derived above.
     %
     \begin{align}
         E_{ij} & =
-        \sum\limits_{k,l}A_{kl} \mathbb{E}(u_i u_j u_k u_l)
+        \sum\limits_{k,l}A_{kl} \mathbb{E}(u_i u_j u u_l)
         \nonumber  \\
                & =
         \sum\limits_{k,l}A_{kl}
@@ -612,7 +617,7 @@ asymptotically approaches the expression derived above.
         \Big)
         \nonumber  \\
                & =
-        2 A_{ij} + \sum\limits_k A_{kk}
+        2 A_{ij} + \sum\limits A_{kk}
         \quad,
     \end{align}
     %
@@ -620,10 +625,10 @@ asymptotically approaches the expression derived above.
     %
     \begin{align}
         \mathbf{E} & =
-        2 \, \mathbf{A} + \mathrm{tr}(\mathbf{A}) \mathbf{I}_K
+        2 \, \mathbf{A} + \mathrm{tr}(\mathbf{A}) \mathbf{I}
         \nonumber      \\
                    & =
-        2 \, \mathbf{L}^\top \, \mathbf{J}_K \, \mathbf{L} + \mathrm{sum}(\pmb{\Sigma}) \mathbf{I}_K
+        2 \, \mathbf{L}^\top \, \mathbf{j} \, \mathbf{j}^\top \, \mathbf{L} + \mathrm{sum}(\pmb{\Sigma}) \mathbf{I}
         \quad.
     \end{align}
     %
@@ -633,13 +638,13 @@ asymptotically approaches the expression derived above.
         \mathbf{P}_4 & =
         \frac{5}{K^4}
         \bigg(
-        2 \, \big(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{L}^\top \, \mathbf{J}_K \, \mathbf{L} \, \mathbf{L}^\top \, \mathbf{j}_K \big)
+        2 \, \big(\mathbf{j}^\top \mathbf{L} \, \mathbf{L}^\top \, \mathbf{j} \, \mathbf{j}^\top \, \mathbf{L} \, \mathbf{L}^\top \, \mathbf{j} \big)
         +
-        \mathrm{sum}(\pmb{\Sigma}) \big(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{L}^\top \, \mathbf{j}_K \big)
-        \bigg) \mathbf{J}_K
+        \mathrm{sum}(\pmb{\Sigma}) \big(\mathbf{j}^\top \mathbf{L} \, \mathbf{L}^\top \, \mathbf{j} \big)
+        \bigg) \mathbf{j} \, \mathbf{j}^\top
         \nonumber        \\
                      & =
-        3 \, \bar{\Sigma}^2 \mathbf{J}_K
+        3 \, \bar{\sigma}^2 \mathbf{j} \, \mathbf{j}^\top
         \quad.
     \end{align}
     %
@@ -647,11 +652,11 @@ asymptotically approaches the expression derived above.
     %
     \begin{align}
         \mathbf{P}_n & =
-        \mathbf{J}_K
+        \mathbf{j} \, \mathbf{j}^\top
         \begin{cases}
             0                                       & n \, \mathrm{odd}
             \\
-            g_n (n + 1) \, \bar{\Sigma}^\frac{n}{2} & n \, \mathrm{even}
+            g_n (n + 1) \, \bar{\sigma}^\frac{n}{2} & n \, \mathrm{even}
             \quad.
         \end{cases}
     \end{align}
@@ -663,53 +668,53 @@ asymptotically approaches the expression derived above.
     Let us again compute the first several terms of this expectation matrix.
     %
     \begin{align}
-        \mathbf{Q}_0 & = \mathbb{E}\left[ \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top \right]
-        \nonumber                                                                                                                                                  \\
-                     & = \mathbf{L} \, \mathbb{E}\left[  \mathbf{u} \right] \, \mathbf{j}_K^\top
-        \nonumber                                                                                                                                                  \\
+        \mathbf{Q}_0 & = \mathbb{E}\left[ \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                              \\
+                     & = \mathbf{L} \, \mathbb{E}\left[  \mathbf{u} \right] \, \mathbf{j}^\top
+        \nonumber                                                                                                                                              \\
                      & = \mathbf{0}
         %
         \\[1em]
         %
-        \mathbf{Q}_1 & = \frac{1}{K}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right) \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top \right]
-        \nonumber                                                                                                                                                  \\
-                     & = \frac{1}{K}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right) \mathbf{L} \, \mathbf{u} \right] \, \mathbf{j}_K^\top
-        \nonumber                                                                                                                                                  \\
-                     & = \frac{1}{K}\mathbb{E}\left[ \mathbf{L} \, \mathbf{u} (\mathbf{u}^\top \mathbf{L}^\top \mathbf{j}_K) \right] \, \mathbf{j}_K^\top
-        \nonumber                                                                                                                                                  \\
-                     & = \frac{1}{K}\mathbb{E}\left[ \mathbf{L} \, \mathbf{u} \mathbf{u}^\top \mathbf{L}^\top  \right] \, \mathbf{J}_K
-        \nonumber                                                                                                                                                  \\
-                     & = \frac{1}{K}\mathbf{L} \, \mathbb{E}\left[  \mathbf{u} \mathbf{u}^\top   \right]  \, \mathbf{L}^\top \mathbf{J}_K
-        \nonumber                                                                                                                                                  \\
-                     & = \frac{1}{K}\mathbf{L} \, \mathbf{L}^\top \mathbf{J}_K
-        \nonumber                                                                                                                                                  \\
-                     & = \frac{1}{K}\pmb{\Sigma} \, \mathbf{J}_K
+        \mathbf{Q}_1 & = \frac{1}{K}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right) \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                              \\
+                     & = \frac{1}{K}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right) \mathbf{L} \, \mathbf{u} \right] \, \mathbf{j}^\top
+        \nonumber                                                                                                                                              \\
+                     & = \frac{1}{K}\mathbb{E}\left[ \mathbf{L} \, \mathbf{u} (\mathbf{u}^\top \mathbf{L}^\top \mathbf{j}) \right] \, \mathbf{j}^\top
+        \nonumber                                                                                                                                              \\
+                     & = \frac{1}{K}\mathbb{E}\left[ \mathbf{L} \, \mathbf{u} \mathbf{u}^\top \mathbf{L}^\top  \right] \, \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                              \\
+                     & = \frac{1}{K}\mathbf{L} \, \mathbb{E}\left[  \mathbf{u} \mathbf{u}^\top   \right]  \, \mathbf{L}^\top \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                              \\
+                     & = \frac{1}{K}\mathbf{L} \, \mathbf{L}^\top \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                              \\
+                     & = \frac{1}{K}\pmb{\Sigma} \, \mathbf{j} \, \mathbf{j}^\top
     \end{align}
     %
-    where we made liberal use of the fact that $\left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)$ is a scalar. Continuing,
+    where we made liberal use of the fact that $\left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)$ is a scalar. Continuing,
     %
     \begin{align}
-        \mathbf{Q}_2 & = \frac{2}{K^2}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^2 \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top \right]
-        \nonumber                                                                                                                                                                                         \\
-                     & =  \frac{2}{K^2}\mathbb{E}\left[ \mathbf{L} \, \mathbf{u} \, (\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}) (\mathbf{u}^\top \mathbf{L}^\top \mathbf{j}_K) \mathbf{j}_K^\top \right]
-        \nonumber                                                                                                                                                                                         \\
-                     & = \frac{2}{K^2}\mathbf{L} \, \mathbb{E}\left[ \mathbf{u} \, \mathbf{j}_K^\top \mathbf{L} \, \mathbf{u} \mathbf{u}^\top \right] \, \mathbf{L}^\top \mathbf{J}_K
-        \nonumber                                                                                                                                                                                         \\
+        \mathbf{Q}_2 & = \frac{2}{K^2}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^2 \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                    \\
+                     & =  \frac{2}{K^2}\mathbb{E}\left[ \mathbf{L} \, \mathbf{u} \, (\mathbf{j}^\top \mathbf{L} \, \mathbf{u}) (\mathbf{u}^\top \mathbf{L}^\top \mathbf{j}) \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                                                    \\
+                     & = \frac{2}{K^2}\mathbf{L} \, \mathbb{E}\left[ \mathbf{u} \, \mathbf{j}^\top \mathbf{L} \, \mathbf{u} \mathbf{u}^\top \right] \, \mathbf{L}^\top \mathbf{j} \, \mathbf{j}^\top
+        \nonumber                                                                                                                                                                                    \\
                      & = \mathbf{0}
     \end{align}
     %
     since again the components of the expectation in the next-to-last line involve products of three standard normal random variables.
     Next,
     \begin{align}
-        \mathbf{Q}_3 & = \frac{3}{K^3}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^3 \mathbf{L} \, \mathbf{u} \, \mathbf{j}_K^\top \right]
-        \nonumber                                                                                                                                                      \\
+        \mathbf{Q}_3 & = \frac{3}{K^3}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^3 \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top \right]
+        \nonumber                                                                                                                                                  \\
                      & = \xxx{...}
-        \nonumber                                                                                                                                                      \\
+        \nonumber                                                                                                                                                  \\
                      & =
-        \frac{3}{K^3}\mathbf{e} \, \mathbf{j}_K^\top
+        \frac{3}{K^3}\mathbf{e} \, \mathbf{j}^\top
     \end{align}
     %
-    % 3 \, \pmb{\Sigma} \, \mathbf{J}_K \, \pmb{\Sigma} \, \mathbf{J}_K
+    % 3 \, \pmb{\Sigma} \, \mathbf{j} \, \mathbf{j}^\top \, \pmb{\Sigma} \, \mathbf{j} \, \mathbf{j}^\top
     %
     where we define
     %
@@ -726,7 +731,7 @@ asymptotically approaches the expression derived above.
     and
     %
     \begin{align}
-        \mathbf{v} \equiv \mathbf{L}^\top \, \mathbf{j}_K
+        \mathbf{v} \equiv \mathbf{L}^\top \, \mathbf{j}
         \quad.
     \end{align}
     %
@@ -734,10 +739,10 @@ asymptotically approaches the expression derived above.
     %
     \begin{align}
         e_{i} & =
-        \sum\limits_{j,k,l,m}L_{ij} v_k v_l v_m \mathbb{E}(u_j u_k u_l u_m)
+        \sum\limits_{j,k,l,m}L_{ij} v v_l v_m \mathbb{E}(u_j u u_l u_m)
         \nonumber \\
               & =
-        \sum\limits_{j,k,l,m}L_{ij} v_k v_l v_m
+        \sum\limits_{j,k,l,m}L_{ij} v v_l v_m
         \Big(
         g_4 \, \delta_{j, k} \, \delta_{l, m} \, \delta_{j, l}
         +
@@ -757,7 +762,7 @@ asymptotically approaches the expression derived above.
     We may thus write
     %
     \begin{align}
-        \mathbf{e} & = 3 \, \pmb{\Sigma} \, \mathbf{J}_K \, \pmb{\Sigma} \, \mathbf{j}_K
+        \mathbf{e} & = 3 \, \pmb{\Sigma} \, \mathbf{j} \, \mathbf{j}^\top \, \pmb{\Sigma} \, \mathbf{j}
         \quad.
     \end{align}
     %
@@ -765,7 +770,7 @@ asymptotically approaches the expression derived above.
     %
     \begin{align}
         \mathbf{Q}_3 & =
-        \frac{9}{K^3} \, (\pmb{\Sigma} \, \mathbf{J}_K)^2
+        \frac{9}{K^3} \, (\pmb{\Sigma} \, \mathbf{j} \, \mathbf{j}^\top)^2
     \end{align}
     %
     Based on this pattern, the general term in $\mathbf{Q}$ is
@@ -773,9 +778,9 @@ asymptotically approaches the expression derived above.
     \begin{align}
         \mathbf{Q}_n & =
         \begin{cases}
-            \mathbf{0}                                                                   & n \, \mathrm{even}
+            \mathbf{0}                                                                                    & n \, \mathrm{even}
             \\
-            \frac{(n + 1)g_{n+1}}{K^n} \, (\pmb{\Sigma} \, \mathbf{J}_K)^\frac{n + 1}{2} & n \, \mathrm{odd}
+            \frac{(n + 1)g_{n+1}}{K^n} \, (\pmb{\Sigma} \, \mathbf{j} \, \mathbf{j}^\top)^\frac{n + 1}{2} & n \, \mathrm{odd}
             \quad.
         \end{cases}
     \end{align}
@@ -787,15 +792,15 @@ asymptotically approaches the expression derived above.
     \setlength{\abovedisplayskip}{1em}
     \begin{align}
         \mathbf{R}_0 & = \mathbb{E}\left[ \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top \right]
-        \nonumber                                                                                                                                                                \\
+        \nonumber                                                                                                                                                              \\
                      & = \mathbf{L} \, \mathbb{E}\left[  \mathbf{u} \, \mathbf{u}^\top \right] \, \mathbf{L}^\top
-        \nonumber                                                                                                                                                                \\
+        \nonumber                                                                                                                                                              \\
                      & = \pmb{\Sigma}
         %
         \\[1em]
         %
-        \mathbf{R}_1 & = \frac{1}{K}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right) \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top \right]
-        \nonumber                                                                                                                                                                \\
+        \mathbf{R}_1 & = \frac{1}{K}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right) \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top \right]
+        \nonumber                                                                                                                                                              \\
                      & = \mathbf{0}
         %
     \end{align}
@@ -804,22 +809,22 @@ asymptotically approaches the expression derived above.
     %
     \begin{align}
         %
-        \mathbf{R}_2 & = \mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^2 \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top \right]
-        \nonumber                                                                                                                                                       \\
+        \mathbf{R}_2 & = \mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^2 \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top \right]
+        \nonumber                                                                                                                                                     \\
                      & = \xxx{...}
-        \nonumber                                                                                                                                                       \\
-                     & = 2 \pmb{\Sigma} \mathbf{J}_K \pmb{\Sigma} + \mathrm{sum}(\pmb{\Sigma}) \pmb{\Sigma}
+        \nonumber                                                                                                                                                     \\
+                     & = 2 \pmb{\Sigma} \mathbf{j} \, \mathbf{j}^\top \pmb{\Sigma} + \mathrm{sum}(\pmb{\Sigma}) \pmb{\Sigma}
     \end{align}
     %
     \xxx{By trial and error, I found that}
     %
     \begin{align}
         %
-        \mathbf{R}_4 & = \frac{5}{K^4}\mathbb{E}\left[ \left(\mathbf{j}_K^\top \mathbf{L} \, \mathbf{u}\right)^4 \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top \right]
-        \nonumber                                                                                                                                                                    \\
+        \mathbf{R}_4 & = \frac{5}{K^4}\mathbb{E}\left[ \left(\mathbf{j}^\top \mathbf{L} \, \mathbf{u}\right)^4 \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top \right]
+        \nonumber                                                                                                                                                                  \\
                      & = \xxx{...}
-        \nonumber                                                                                                                                                                    \\
-                     & = \frac{5}{K^4} \Big( 12 (\pmb{\Sigma} \mathbf{J}_K)^2 \pmb{\Sigma} + 3 \, \mathrm{sum}(\pmb{\Sigma})^2 \pmb{\Sigma} \Big)
+        \nonumber                                                                                                                                                                  \\
+                     & = \frac{5}{K^4} \Big( 12 (\pmb{\Sigma} \mathbf{j} \, \mathbf{j}^\top)^2 \pmb{\Sigma} + 3 \, \mathrm{sum}(\pmb{\Sigma})^2 \pmb{\Sigma} \Big)
     \end{align}
     %
     Based on this pattern, the general term in $\mathbf{R}$ is
@@ -827,9 +832,9 @@ asymptotically approaches the expression derived above.
     \begin{align}
         \mathbf{R}_n & =
         \begin{cases}
-            \mathbf{0}                                                                                                                                     & n \, \mathrm{odd}
+            \mathbf{0}                                                                                                                                                      & n \, \mathrm{odd}
             \\
-            \frac{n (n + 1) g_{n}}{K^n} \, (\pmb{\Sigma} \, \mathbf{J}_K)^\frac{n}{2}\pmb{\Sigma} + (n + 1) g_{n} \, \bar{\Sigma}^\frac{n}{2} \pmb{\Sigma} & n \, \mathrm{even}
+            \frac{n (n + 1) g_{n}}{K^n} \, (\pmb{\Sigma} \, \mathbf{j} \, \mathbf{j}^\top)^\frac{n}{2}\pmb{\Sigma} + (n + 1) g_{n} \, \bar{\sigma}^\frac{n}{2} \pmb{\Sigma} & n \, \mathrm{even}
             \quad.
         \end{cases}
     \end{align}
@@ -849,20 +854,20 @@ asymptotically approaches the expression derived above.
         \frac{(-1)^n(n + 1)}{\mu^{n}}
         \,
         \bigg[
-            g_n \, \bar{\Sigma}^\frac{n}{2} \, (\pmb{\Sigma} + \mu^2\mathbf{J}_K)
+            g_n \, \bar{\sigma}^\frac{n}{2} \, (\pmb{\Sigma} + \mu^2\mathbf{j} \, \mathbf{j}^\top)
             \, +
             \nonumber                 \\[0.5em]
          & \phantom{XXXXXXXXXXXXXXX.}
         K g_{n+1} \mu  \,
         \left(
-        \left(\pmb{\Sigma} \, \frac{\mathbf{J}_K}{K^2}\right)^\frac{n + 1}{2}
+        \left(\pmb{\Sigma} \, \frac{\mathbf{j} \, \mathbf{j}^\top}{K^2}\right)^\frac{n + 1}{2}
         +
-        \left(\frac{\mathbf{J}_K}{K^2} \, \pmb{\Sigma}\right)^\frac{n + 1}{2}
+        \left(\frac{\mathbf{j} \, \mathbf{j}^\top}{K^2} \, \pmb{\Sigma}\right)^\frac{n + 1}{2}
         \right)
         \, +
         \nonumber                     \\[0.5em]
          & \phantom{XXXXXXXXXXXXXXX.}
-        n g_n \, \left(\pmb{\Sigma} \, \frac{\mathbf{J}_K}{K^2}\right)^\frac{n}{2}\pmb{\Sigma}
+        n g_n \, \left(\pmb{\Sigma} \, \frac{\mathbf{j} \, \mathbf{j}^\top}{K^2}\right)^\frac{n}{2}\pmb{\Sigma}
         \bigg]
         \quad.
     \end{align}

@@ -39,25 +39,28 @@ def uprod(*idx):
         raise NotImplementedError("Case not implemented.")
 
 
-def norm_cov(mu, Sig, N=20):
+def norm_cov(mu, Sig, N=10):
+
+    # Terms
     K = Sig.shape[0]
-    J = np.ones((K, K))
-    barSig = np.mean(Sig)
+    j = np.ones((K, 1))
+    sigs = np.mean(Sig)
+    sigv = (Sig @ j) / K
+    x = sigs / mu ** 2
+    s = sigs * j - sigv
 
-    # Powers of S / barSig
-    G = (Sig @ J) / K ** 2 / barSig
-    Gpow = [np.eye(K)]
-    for n in range((N + 2) // 2):
-        Gpow.append(Gpow[-1] @ G)
+    # Coefficients
+    fac = 1.0
+    alpha = 0.0
+    beta = 0.0
+    for n in range(0, N + 1):
+        alpha += fac
+        beta += 2 * n * fac
+        fac *= x * (2 * n + 3)
 
-    norm_cov = np.zeros_like(Sig)
-    for n in range(0, N + 1, 2):
-        fac = (-1) ** n * (n + 1) * g(n) * barSig ** (n // 2) / (mu ** n)
-        norm_cov += fac * (
-            Sig
-            + n * (Gpow[n // 2]) @ Sig
-            + (n + 1) * barSig * J
-            - (n + 1) * barSig * K * (Gpow[(n + 2) // 2] + Gpow[(n + 2) // 2].T)
-        )
-
-    return norm_cov / mu ** 2
+    # We're done
+    return (
+        (alpha / mu ** 2) * Sig
+        + (alpha / (mu ** 2 * sigs)) * (s @ s.T - sigv @ sigv.T)
+        + (beta / (mu ** 2 * sigs)) * (s @ s.T)
+    )
