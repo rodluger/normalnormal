@@ -44,24 +44,20 @@ def norm_cov(mu, Sig, N=20):
     J = np.ones((K, K))
     barSig = np.mean(Sig)
 
-    # Powers of S
-    S = (Sig @ J) / K ** 2
-    Spow = [np.eye(K)]
+    # Powers of S / barSig
+    G = (Sig @ J) / K ** 2 / barSig
+    Gpow = [np.eye(K)]
     for n in range((N + 2) // 2):
-        Spow.append(Spow[-1] @ S)
+        Gpow.append(Gpow[-1] @ G)
 
     norm_cov = np.zeros_like(Sig)
     for n in range(0, N + 1, 2):
+        fac = (-1) ** n * (n + 1) * g(n) * barSig ** (n // 2) / (mu ** n)
+        norm_cov += fac * (
+            Sig
+            + n * (Gpow[n // 2]) @ Sig
+            + (n + 1) * barSig * J
+            - (n + 1) * barSig * K * (Gpow[(n + 2) // 2] + Gpow[(n + 2) // 2].T)
+        )
 
-        EP = (n + 1) * g(n) * barSig ** ((n + 2) // 2) * J
-        P = (-1) ** n * (n + 1) * EP
-
-        EQ = (n + 1) * K * g(n) * Spow[(n + 2) // 2]
-        Q = (-1) ** n * (n + 1) * EQ
-
-        ER = n * g(n) * Spow[n // 2] @ Sig + g(n) * barSig ** (n // 2) * Sig
-        R = (-1) ** n * (n + 1) * ER
-
-        norm_cov += (P - (Q + Q.T) + R) / (mu ** (n + 2))
-
-    return norm_cov
+    return norm_cov / mu ** 2
