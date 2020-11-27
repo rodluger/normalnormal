@@ -26,7 +26,7 @@ jobs:
   - script: |
       . $CONDA/etc/profile.d/conda.sh
       conda activate normgp
-      conda install -y -q numpy scipy
+      conda install -y -q numpy scipy matplotlib
       pip install -U pip
       pip install -U setuptools
       conda install -y -q -c conda-forge tectonic
