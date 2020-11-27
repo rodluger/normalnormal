@@ -39,7 +39,7 @@ def uprod(*idx):
         raise NotImplementedError("Case not implemented.")
 
 
-def norm_cov(mu, Sig, N=10):
+def norm_cov(mu, Sig, N=20):
 
     # Terms
     K = Sig.shape[0]

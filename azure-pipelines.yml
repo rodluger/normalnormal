@@ -31,6 +31,7 @@ jobs:
       pip install -U setuptools
       conda update -y --all
       conda install -y -q -c conda-forge tectonic
+      pip install -U george
 
     displayName: 'Install dependencies'
 
