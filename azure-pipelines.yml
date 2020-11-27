@@ -29,6 +29,7 @@ jobs:
       conda install -y -q numpy scipy matplotlib
       pip install -U pip
       pip install -U setuptools
+      conda update -y --all
       conda install -y -q -c conda-forge tectonic
 
     displayName: 'Install dependencies'
