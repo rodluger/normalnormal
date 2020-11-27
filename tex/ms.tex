@@ -29,6 +29,53 @@
 
 \author{Rodrigo Luger}
 
+\section{Introduction}
+
+It is standard practice in astronomy to mean- or median- normalize datasets,
+since one is often more interested in deviations from
+some baseline than in the value of the baseline itself. This is the case,
+for example, in searches for transiting exoplanets or photometric studies
+of stellar variability, where the raw data
+consists of a timeseries of fluxes measured in counts on the detector.
+The absolute number of counts from a particular target is physically
+uninteresting, as it depends on a host of variables such as the distance to
+the target, the collecting area of the instrument, and the quantum efficiency of the
+detector. However, fractional deviations from the mean number of counts
+\emph{are} physically meaningful, as they can encode information such as the
+size of the transiting planet or the size and contrast of star spots.
+Normalization by the mean (or median) allows one to analyze data in units of (say)
+parts per million rather than counts per second.
+
+Another common practice in astronomy is to model one's data (or at least
+a component of one's data) as a Gaussian process \citep[GP; e.g.,][]{RasmussenWilliams2005}.
+GPs offer a convenient, flexible, and efficient way of modeling correlated
+data and have seen extensive use in both transiting exoplanet and stellar
+variability studies \xxx{(?)}. In one dimension, a GP is fully described
+by a mean vector $\pmb{\mu}$ and a covariance matrix $\pmb{\Sigma}$, the
+latter of which encodes information about correlations and periodicities
+in the data that are in some cases related to physical
+parameters of interest (such as the rotation period of a star or the
+lifetime of star spots).
+
+In this note, we show that these two common practices are somewhat at odds
+with each other. Specifically, if a physical process that generates
+a dataset is distributed as a GP, the normalized process \emph{cannot} be
+distributed as a GP. Provided certain conditions are met, the normalized
+process can be well \emph{approximated} by a GP, albeit one with a different
+covariance matrix $\tilde{\pmb{\Sigma}}$ that is not simply a scalar
+multiple of the original covariance matrix. Moreover, if the original process
+is described by a stationary kernel (i.e., one in which covariances are
+independent of phase), the normalized process is not guaranteed to be.
+
+For many applications, the results of this note are not likely to make
+much of a difference, since GPs are often used to model nuisance
+signals; in this case, the optimal hyperparameters describing the GP
+covariance are physically uninteresting. However, in cases where one
+wishes to interpret the GP hyperparameters in a physical context
+(such as using a periodic GP kernel to infer stellar rotation rates),
+normalizing one's data to the mean or median value can impart
+(potentially significant) bias.
+
 \section{The problem}
 
 Let $\mathbf{x} = \left( x_0 \,\, \cdots \,\, x_{K-1} \right)^\top$
@@ -62,7 +109,7 @@ $\tilde{\mathbf{x}}$:
 \end{align}
 %
 The random variable $\tilde{\mathbf{x}}$ is no longer normally distributed, but as long as
-the variance of $\bar{x}$ is small, we can approximate it as such. Let the mean
+the variance of $\bar{x}$ is small, we can attempt to approximate it as such. Let the mean
 and covariance of $\tilde{\mathbf{x}}$ be $\tilde{\pmb{\mu}}$ and $\tilde{\pmb{\Sigma}}$, respectively:
 %
 \begin{align}
@@ -186,14 +233,18 @@ The mean $\bar{x}$ is
             & =
     \mu + \frac{1}{K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}
     \nonumber                                               \\
-            & = \mu(1 + z)
+            & = \mu(1 + \epsilon)
     \quad,
 \end{align}
 %
 where we define the quantity
 %
 \begin{align}
-    z \equiv \frac{1}{\mu K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}
+    \label{eq:epsilon}
+    \epsilon
+     & \equiv \frac{\bar{x}}{\mu} - 1
+    \nonumber                                                    \\[0.5em]
+     & = \frac{1}{\mu K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}
     \quad.
 \end{align}
 %
@@ -224,7 +275,7 @@ where we define the matrices
     \label{eq:Pexact}
     \mathbf{P} & \equiv
     \mathbb{E}\Big[
-        \frac{z^2 \, \mathbf{j} \, \mathbf{j}^\top}{(1 + z)^2}
+        \frac{\epsilon^2 \, \mathbf{j} \, \mathbf{j}^\top}{(1 + \epsilon)^2}
         \Big]
     %
     \\[0.5em]
@@ -232,7 +283,7 @@ where we define the matrices
     \label{eq:Qexact}
     \mathbf{Q} & \equiv
     \mathbb{E}\left[
-        \frac{z\, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top}{(1 + z)^2}
+        \frac{\epsilon\, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top}{(1 + \epsilon)^2}
         \right]
     %
     \\[0.5em]
@@ -240,33 +291,35 @@ where we define the matrices
     \label{eq:Rexact}
     \mathbf{R} & \equiv
     \mathbb{E}\left[
-        \frac{ \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top}{(1 + z)^2}
+        \frac{ \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top}{(1 + \epsilon)^2}
         \right]
 \end{align}
 %
 The denominator in the expressions above makes direct evaluation of the expectations
 intractable. Provided
-$\big|z| < 1$ (an assumption we'll revisit below), we can Taylor expand the matrices as
+$\big|\epsilon| < 1$ (an assumption we'll revisit below), we can Taylor expand the matrices as
 %
 \begin{align}
+    \label{eq:WhereItAllGoesWrong1}
     \mathbf{P}
      & =
     \sum\limits_{n=0}^\infty
     (-1)^n (n + 1)
     \,
     \mathbb{E}\left[
-        z^{n + 2}
+        \epsilon^{n + 2}
         \,
         \mathbf{j} \, \mathbf{j}^\top
         \right]
     \\[0.5em]
+    \label{eq:WhereItAllGoesWrong2}
     \mathbf{Q}
      & =
     \sum\limits_{n=0}^\infty
     (-1)^n (n + 1)
     \,
     \mathbb{E}\left[
-        z^{n + 1} \,
+        \epsilon^{n + 1} \,
         \mathbf{L}
         \,
         \mathbf{u}
@@ -274,13 +327,14 @@ $\big|z| < 1$ (an assumption we'll revisit below), we can Taylor expand the matr
         \mathbf{j}^\top
         \right]
     \\[0.5em]
+    \label{eq:WhereItAllGoesWrong3}
     \mathbf{R}
      & =
     \sum\limits_{n=0}^\infty
     (-1)^n (n + 1)
     \,
     \mathbb{E}\left[
-        z^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
+        \epsilon^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
         \right]
 \end{align}
 %
@@ -288,19 +342,19 @@ In the Appendix, we show that the expecations in the expressions above may be co
 %
 \begin{align}
     \mathbb{E}\left[
-        z^{n + 2} \, \mathbf{j} \, \mathbf{j}^\top
+        \epsilon^{n + 2} \, \mathbf{j} \, \mathbf{j}^\top
         \right]
      & =
     \frac{(n + 1) g_{n} \bar{\sigma}^\frac{n+2}{2}}{\mu^{n+2}} \, \mathbf{j} \, \mathbf{j}^\top
     \\[0.5em]
     \mathbb{E}\left[
-        z^{n + 1} \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top
+        \epsilon^{n + 1} \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top
         \right]
      & =
     \frac{(n + 1) K \, g_{n} \bar{\sigma}^\frac{n}{2}}{\mu^{n+1}} \, \bar{\pmb{\sigma}} \, \mathbf{j}^\top
     \\[0.5em]
     \mathbb{E}\left[
-        z^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
+        \epsilon^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
         \right]
      & =
     \frac{g_n}{\mu^n} \left(
@@ -340,65 +394,127 @@ is the average of each row in $\pmb{\Sigma}$, and
 is the average of all the elements in $\pmb{\Sigma}$.
 %
 Inserting these expressions into Equation~(\ref{eq:SigmaPQR}) and rearranging, we obtain
+the final expression for the normalized covariance,
 %
 \begin{align}
+    \label{eq:SigmaTilde}
     \tilde{\pmb{\Sigma}}
      & =
     \frac{\alpha \, \pmb{\Sigma}}{\mu^2}  +
     \frac{\alpha \, \left(\mathbf{s} \, \mathbf{s}^\top - \bar{\pmb{\sigma}} \, \bar{\pmb{\sigma}}^\top\right)}{\mu^2 \bar{\sigma}}  +
     \frac{\beta \, \left(\mathbf{s} \, \mathbf{s}^\top\right)}{\mu^2 \bar{\sigma}}
+    \quad,
 \end{align}
 %
-where
+where we define
 %
 \begin{align}
     \mathbf{s}
      & \equiv
     \bar{\sigma} \, \mathbf{j} - \bar{\pmb{\sigma}}
-\end{align}
-%
-and
-%
-\begin{align}
+    \\[1em]
+    \label{eq:alpha}
     \alpha
      & \equiv
-    \sum\limits_{n=0}^N
+    \sum\limits_{n=0}^\infty
     \frac{(2n + 1)!}{2^n \, n!}
-    \left(
-    \frac{\bar{\sigma}}{\mu^2}
-    \right)^n
+    z^n
     \\[1em]
+    \label{eq:beta}
     \beta
      & \equiv
-    \sum\limits_{n=0}^N
+    \sum\limits_{n=0}^\infty
     \frac{2n(2n + 1)!}{2^n \, n!}
-    \left(
-    \frac{\bar{\sigma}}{\mu^2}
-    \right)^n
+    z^n
 \end{align}
 %
-
-\xxx{...}
-
-This series is divergent!
-This may be understood intuitively: given a (very) large number of draws from
-a Gaussian process, one of the draws will eventually correspond to a value of
-$\mathbf{x}$ whose
-mean $\bar{x}$ is arbitrarily close to zero, for which the denominators in the
-expectations in Equation~(\ref{eq:SigmaTildeExp}) diverge.
-
-While this is true for any
-$\mu$ and $\pmb{\Sigma} \ne \mathbf{0}$, in practice the probability of
-drawing $\bar{x} \approx 0$ is vanishingly small provided that
+as well as the dimensionless parameter
 %
 \begin{align}
-    \frac{\bar{\sigma}}{\mu^2} \ll 1
+    z & \equiv \frac{\bar{\sigma}}{\mu^2}
     \quad.
 \end{align}
+
+\section{The Bad News}
 %
-In this limit, any attempt to approximate $\tilde{\pmb{\Sigma}}$
-numerically will yield a consistent, finite solution that
-asymptotically approaches the expression derived above.
+In the previous section we derived a compact expression for
+the covariance of a normalized Gaussian process (Equation~\ref{eq:SigmaTilde}),
+which can be computed as the sum of a term proportional to the original
+covariance $\pmb{\Sigma}$ and a low-rank correction.
+%
+Unfortunately, the expressions for the scaling constants $\alpha$ and
+$\beta$ (Equations~\ref{eq:alpha} and \ref{eq:beta}) involve series
+expansions that \emph{do not converge}.
+%
+\begin{figure}[t!]
+    \begin{centering}
+        \includegraphics[width=\linewidth]{figures/alpha_beta.pdf}
+        \oscaption{alpha_beta}{%
+            Asymptotic series expansions for $\alpha$ and $\beta$
+            (Equations~\ref{eq:alpha} and \ref{eq:beta}).
+            The left panel shows the value of each
+            coefficient ($\alpha$: solid, $\beta$: dashed)
+            as a function of the index $n$ for three
+            different values of $z$. In all cases, the value initially decreases
+            with $n$ but eventually diverges to $+\infty$ as $n \rightarrow \infty$.
+            The vertical lines indicate the optimal truncation order $N$,
+            for which the partial sums yield the best approximation to the
+            asymptotic values of the cofficients. The right panels show the
+            partial sums evaluated at each order; the value at the optimal
+            truncation order is marked with the horizontal dashed lines.
+            \label{fig:alpha_beta}
+        }
+    \end{centering}
+\end{figure}
+%
+This is demonstrated in Figure~\ref{fig:alpha_beta}, which shows the
+terms in the summations in Equations~\ref{eq:alpha} and \ref{eq:beta} for
+different values of $z$. While the terms initially decrease in magnitude
+(left panel), asymptotically approaching a finite value for both
+$\alpha$ and $\beta$ (right panels), as the expansion order increases
+the terms eventually diverge, leading to infinite values for both
+coefficients. Even though the series take longer to diverge for smaller
+values of $z$, the divergence occurs for all $z \ne 0$: i.e., the radius
+of convergence for both series is zero.
+
+Why is this? Recall the assumption we made when expanding the expectation
+integrals in Equations~(\ref{eq:WhereItAllGoesWrong1}), (\ref{eq:WhereItAllGoesWrong2}),
+and (\ref{eq:WhereItAllGoesWrong3}): the Taylor expansion converges only for
+$\big|\epsilon| < 1$. The quantity $\epsilon$ (Equation~\ref{eq:epsilon})
+is indeed small provided the sample mean $\bar{x}$ is close to the GP
+mean $\mu$. However, $\epsilon$ is a random variable, equal to
+the weighted sum of $K$ standard normal random variables. Because a normal
+distribution has infinite support, $\epsilon$ is guaranteed to take on
+values greater than unity in the limit that an infinite number of samples
+are drawn from the process. In particular, it is guaranteed to take on values
+arbitrarily close to unity, in which case the sample mean approaches zero and
+the values in the normalized sample diverge.
+This reveals a fundamental flaw in our premise:
+it is simply not correct to normalize a sample from a Gaussian process by its
+mean value, since the resulting covariance is formally infinite.
+
+Nevertheless, if one were to draw a very large number of samples from a normal
+distribution with unit mean and small standard deviation,
+the probability of drawing a sample with mean close to or smaller than zero
+is vanishingly small (for example, for $\sigma \lesssim 0.1$, this probability
+is $\lesssim 10^{-22}$).
+Any numerical (sampling) estimate of the
+covariance matrix of the normalized Gaussian process will therefore yield
+a result that asymptotically approaches a finite, consistent value as the
+number of samples increases. If it were practical to draw
+$\sim 10^{22}$ samples, however, the estimate would eventually diverge, since
+some of the normalized samples would have divergent values.
+
+This is the exact same behavior we see in the series solution above.
+While the series formally diverges, the finite asymptotic value obtained
+by truncating the expansion early can be understood as an estimate of
+the covariance of the normalized process \emph{ignoring the divergent
+tails of the distribution}.
+
+In the following sections, we empirically show that this interpretation is
+correct, and the expression for the normalized covariance
+(Equation~\ref{eq:SigmaTilde}) is accurate provided $z \ll 1$.
+
 
 \ifdefined \includeAppendix
 
@@ -419,7 +535,7 @@ asymptotically approaches the expression derived above.
         (-1)^n (n + 1)
         \,
         \mathbb{E}\left[
-            z^n
+            \epsilon^n
             \Bigg(
             \mu^2 \mathbf{j} \, \mathbf{j}^\top
             +
@@ -873,13 +989,6 @@ asymptotically approaches the expression derived above.
     \end{align}
 
 \else
-
-    \clearpage
-
-    \appendix
-
-    See \citet{Winkelbauer2012}...
-
 \fi
 
 \bibliography{bib}
