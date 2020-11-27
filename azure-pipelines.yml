@@ -3,7 +3,7 @@ name: WriteThePaper
 trigger:
   branches:
     include:
-    - master
+    - main
 
 jobs:
 - job: Default
