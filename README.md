@@ -1,6 +1,6 @@
 # normgp
 
-<p align="center">
+<p align="left">
   <a href="https://dev.azure.com/rodluger/normgp/_build">
     <img src="https://dev.azure.com/rodluger/normgp/_apis/build/status/rodluger.normgp?branchName=main"/>
   </a>
