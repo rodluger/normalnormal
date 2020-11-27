@@ -45,10 +45,3 @@ figures/%.pdf: figures/%.py
 # Run all tests
 tests/test_%.tex: tests/test_%.py
 	cd $(<D); python run.py $(<F) 2>&1
-
-foo:
-	if [ "${TECTONIC}" = "true" ]; then\
-		echo true;\
-	else\
-		echo false;\
-	fi

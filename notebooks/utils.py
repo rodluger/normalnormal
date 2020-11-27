@@ -44,10 +44,10 @@ def norm_cov(mu, Sig, N=10):
     # Terms
     K = Sig.shape[0]
     j = np.ones((K, 1))
-    sigs = np.mean(Sig)
-    sigv = (Sig @ j) / K
-    x = sigs / mu ** 2
-    s = sigs * j - sigv
+    m = np.mean(Sig)
+    mvec = (Sig @ j) / K
+    x = m / mu ** 2
+    s = m * j - mvec
 
     # Coefficients
     fac = 1.0
@@ -61,6 +61,6 @@ def norm_cov(mu, Sig, N=10):
     # We're done
     return (
         (alpha / mu ** 2) * Sig
-        + (alpha / (mu ** 2 * sigs)) * (s @ s.T - sigv @ sigv.T)
-        + (beta / (mu ** 2 * sigs)) * (s @ s.T)
+        + (alpha / (mu ** 2 * m)) * (s @ s.T - mvec @ mvec.T)
+        + (beta / (mu ** 2 * m)) * (s @ s.T)
     )
