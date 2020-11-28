@@ -20,7 +20,8 @@ jobs:
   - script: |
       sudo chown -R $USER $CONDA
       . $CONDA/etc/profile.d/conda.sh
-      conda create --yes --quiet --name normgp python=3.7.3 pip
+      conda create --yes --quiet --name normgp python=3.8 pip
+      conda update -y --all
     displayName: 'Setup conda'
   
   - script: |
@@ -29,7 +30,6 @@ jobs:
       conda install -y -q numpy scipy matplotlib
       pip install -U pip
       pip install -U setuptools
-      conda update -y --all
       conda install -y -c conda-forge tectonic
       sudo apt-get install libeigen3-dev
       pip install -U pybind11
