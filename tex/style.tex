@@ -8,6 +8,7 @@
 \usepackage{upgreek}
 \usepackage[bbgreekl]{mathbbol}
 \usepackage{afterpage}
+\usepackage[bb=boondox]{mathalpha}
 
 % Misc. macros
 \newcommand{\LMAX}{15\xspace}
@@ -35,3 +36,9 @@
                 \vbox{\kern7\p@\hbox{.}}\mkern2mu
                 \raise4\p@\hbox{.}\mkern2mu\raise7\p@\hbox{.}\mkern1mu}}
 \makeatother
+
+% 
+\DeclareSymbolFont{boldoperators}{OT1}{cmr}{bx}{n}
+\SetSymbolFont{boldoperators}{bold}{OT1}{cmr}{bx}{n}
+\edef\bbar{\unexpanded{\protect\mathaccentV{bar}}\number\symboldoperators16}
+\edef\btilde{\unexpanded{\protect\mathaccentV{tilde}}\number\symboldoperators7E}

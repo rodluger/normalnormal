@@ -6,7 +6,6 @@
 % Load custom style
 \input{style}
 
-
 % Bibliography
 \bibliographystyle{aasjournal}
 
@@ -62,7 +61,7 @@ with each other. Specifically, if a physical process that generates
 a dataset is distributed as a GP, the normalized process \emph{cannot} be
 distributed as a GP. Provided certain conditions are met, the normalized
 process can be well \emph{approximated} by a GP, albeit one with a different
-covariance matrix $\tilde{\pmb{\Sigma}}$ that is not simply a scalar
+covariance matrix $\btilde{\pmb{\Sigma}}$ that is not simply a scalar
 multiple of the original covariance matrix. Moreover, if the original process
 is described by a stationary kernel (i.e., one in which covariances are
 independent of phase), the normalized process is not guaranteed to be.
@@ -78,13 +77,13 @@ normalizing one's data to the mean or median value can impart
 
 \section{The problem}
 
-Let $\mathbf{x} = \left( x_0 \,\, \cdots \,\, x_{K-1} \right)^\top$
+Let $\mathbbb{x} = \left( \mathbb{x}_0 \,\, \cdots \,\, \mathbb{x}_{K-1} \right)^\top$
 be a $K$-dimensional multivariate normal random variable distributed
 according to a Gaussian Process with mean $\pmb{\mu}$
 and covariance $\pmb{\Sigma}$:
 %
 \begin{align}
-    \mathbf{x} \sim \mathcal{N}\left( \pmb{\mu}, \pmb{\Sigma} \right)
+    \mathbbb{x} \sim \mathcal{N}\left( \pmb{\mu}, \pmb{\Sigma} \right)
     \quad.
 \end{align}
 %
@@ -96,73 +95,73 @@ For simplicity, let us assume the mean is constant, i.e.,
 %
 where $\mathbf{j}$ is the vector of $K$ ones.
 %
-Now suppose we cannot observe samples of $\mathbf{x}$ directly, but instead we can
+Now suppose we cannot observe samples of $\mathbbb{x}$ directly, but instead we can
 observe samples from the \emph{normalized} process, which we will call
-$\tilde{\mathbf{x}}$:
+$\btilde{\mathbbb{x}}$:
 %
 \begin{align}
-    \tilde{\mathbf{x}}
-     & \equiv \frac{\mathbf{x}}{\bar{x}}
-    \nonumber                                                    \\[0.5em]
-     & = \frac{\mathbf{x}}{\frac{1}{K}\sum\limits_{k=0}^{K-1} x}
+    \btilde{\mathbbb{x}}
+     & \equiv \frac{\mathbbb{x}}{\bbar{\mathbb{x}}}
+    \nonumber                                                              \\[0.5em]
+     & = \frac{\mathbbb{x}}{\frac{1}{K}\sum\limits_{k=0}^{K-1} \mathbb{x}}
     \quad.
 \end{align}
 %
-The random variable $\tilde{\mathbf{x}}$ is no longer normally distributed, but as long as
-the variance of $\bar{x}$ is small, we can attempt to approximate it as such. Let the mean
-and covariance of $\tilde{\mathbf{x}}$ be $\tilde{\pmb{\mu}}$ and $\tilde{\pmb{\Sigma}}$, respectively:
+The random variable $\btilde{\mathbbb{x}}$ is no longer normally distributed, but as long as
+the variance of $\bbar{\mathbb{x}}$ is small, we can attempt to approximate it as such. Let the mean
+and covariance of $\btilde{\mathbbb{x}}$ be $\btilde{\pmb{\mu}}$ and $\btilde{\pmb{\Sigma}}$, respectively:
 %
 \begin{align}
-    \tilde{\mathbf{x}} \mathrel{\dot\sim} \mathcal{N}\left( \tilde{\pmb{\mu}}, \tilde{\pmb{\Sigma}} \right)
+    \btilde{\mathbbb{x}} \mathrel{\dot\sim} \mathcal{N}\left( \btilde{\pmb{\mu}}, \btilde{\pmb{\Sigma}} \right)
     \quad.
 \end{align}
 %
 By definition, the mean is unity, i.e,
 %
 \begin{align}
-    \tilde{\pmb{\mu}} = \mathbf{j}
+    \btilde{\pmb{\mu}} = \mathbf{j}
     \quad.
 \end{align}
 %
-What is the expression for $\tilde{\pmb{\Sigma}}$?
+What is the expression for $\btilde{\pmb{\Sigma}}$?
 
 \section{The solution}
 
 The covariance is given by
 %
 \begin{align}
-    \tilde{\pmb{\Sigma}}
+    \btilde{\pmb{\Sigma}}
      & =
-    \mathbb{E}\big[ (\tilde{\mathbf{x}} - \tilde{\pmb{\mu}}) (\tilde{\mathbf{x}} - \tilde{\pmb{\mu}} )^\top \big]
+    \mathbbb{E}\big[ (\btilde{\mathbbb{x}} - \btilde{\pmb{\mu}}) (\btilde{\mathbbb{x}} - \btilde{\pmb{\mu}} )^\top \big]
     \nonumber \\[0.5em]
      & =
-    \mathbb{E}\left[
-        \left(\frac{\mathbf{x}}{\bar{x}} - \mathbf{j}\right)
-        \left(\frac{\mathbf{x}}{\bar{x}} - \mathbf{j}\right)^\top
+    \mathbbb{E}\left[
+        \left(\frac{\mathbbb{x}}{\bbar{\mathbb{x}}} - \mathbf{j}\right)
+        \left(\frac{\mathbbb{x}}{\bbar{\mathbb{x}}} - \mathbf{j}\right)^\top
         \right]
     \nonumber \\[0.5em]
      & =
-    \mathbb{E}\left[
-        \frac{\mathbf{x}\mathbf{x}^\top}{\bar{x}^2}
+    \mathbbb{E}\left[
+        \frac{\mathbbb{x}\mathbbb{x}^\top}{\bbar{\mathbb{x}}^2}
         -
-        \frac{\mathbf{x}\,\mathbf{j}^\top}{\bar{x}}
+        \frac{\mathbbb{x}\,\mathbf{j}^\top}{\bbar{\mathbb{x}}}
         -
-        \frac{\mathbf{j}\,\mathbf{x}^\top}{\bar{x}}
+        \frac{\mathbf{j}\,\mathbbb{x}^\top}{\bbar{\mathbb{x}}}
         +
         \mathbf{j} \, \mathbf{j}^\top
         \right]
     \nonumber \\[0.5em]
      & =
-    \mathbb{E}\left[
-        \frac{\mathbf{x}\mathbf{x}^\top}{\bar{x}^2}
+    \mathbbb{E}\left[
+        \frac{\mathbbb{x}\mathbbb{x}^\top}{\bbar{\mathbb{x}}^2}
         \right]
     -
-    \mathbb{E}\left[
-        \frac{\mathbf{x}\,\mathbf{j}^\top}{\bar{x}}
+    \mathbbb{E}\left[
+        \frac{\mathbbb{x}\,\mathbf{j}^\top}{\bbar{\mathbb{x}}}
         \right]
     -
-    \mathbb{E}\left[
-        \frac{\mathbf{j}\,\mathbf{x}^\top}{\bar{x}}
+    \mathbbb{E}\left[
+        \frac{\mathbf{j}\,\mathbbb{x}^\top}{\bbar{\mathbb{x}}}
         \right]
     +
     \mathbf{j} \, \mathbf{j}^\top
@@ -172,7 +171,7 @@ The covariance is given by
 To evaluate this, it is convenient to write
 %
 \begin{align}
-    \mathbf{x} = \pmb{\mu} + \mathbf{L} \mathbf{u}
+    \mathbbb{x} = \pmb{\mu} + \mathbf{L} \mathbbb{u}
     \quad,
 \end{align}
 %
@@ -183,57 +182,57 @@ i.e.,
     \pmb{\Sigma} = \mathbf{L}\,\mathbf{L}^\top
 \end{align}
 %
-and $\mathbf{u}$ is a standard multivariate normal random variable,
+and $\mathbbb{u}$ is a standard multivariate normal random variable,
 %
 \begin{align}
-    \mathbf{u} \sim \mathcal{N}\left( 0, \mathbf{I} \right)
+    \mathbbb{u} \sim \mathcal{N}\left( 0, \mathbf{I} \right)
     \quad,
 \end{align}
 %
 where $\mathbf{I}$ is the
 $K \times K$ identity matrix.
-The expression for the covariance $\tilde{\pmb{\Sigma}}$ may now be written
+The expression for the covariance $\btilde{\pmb{\Sigma}}$ may now be written
 %
 \begin{align}
     \label{eq:SigmaTildeExp}
-    \tilde{\pmb{\Sigma}}
+    \btilde{\pmb{\Sigma}}
      & =
-    \mathbb{E}\left[
+    \mathbbb{E}\left[
         \frac{
-            (\pmb{\mu} + \mathbf{L} \mathbf{u})(\pmb{\mu} + \mathbf{L} \mathbf{u})^\top
+            (\pmb{\mu} + \mathbf{L} \mathbbb{u})(\pmb{\mu} + \mathbf{L} \mathbbb{u})^\top
         }{
-            \bar{x}^2
+            \bbar{\mathbb{x}}^2
         }
         \right]
     -
-    \mathbb{E}\left[
+    \mathbbb{E}\left[
         \frac{
-            (\pmb{\mu} + \mathbf{L} \mathbf{u})\mathbf{j}^\top
+            (\pmb{\mu} + \mathbf{L} \mathbbb{u})\mathbf{j}^\top
         }{
-            \bar{x}
+            \bbar{\mathbb{x}}
         }
         \right]
     -
-    \mathbb{E}\left[
+    \mathbbb{E}\left[
         \frac{
-            \mathbf{j}(\pmb{\mu} + \mathbf{L} \mathbf{u})^\top
+            \mathbf{j}(\pmb{\mu} + \mathbf{L} \mathbbb{u})^\top
         }{
-            \bar{x}
+            \bbar{\mathbb{x}}
         }
         \right]
     +
     \mathbf{j} \, \mathbf{j}^\top
 \end{align}
 %
-The mean $\bar{x}$ is
+The mean $\bbar{\mathbb{x}}$ is
 %
 \begin{align}
-    \bar{x} & = \sum\limits_{j=0}^{K-1}(\mu_j + L_{i,j}u_j)
-    \nonumber                                               \\
-            & =
-    \mu + \frac{1}{K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}
-    \nonumber                                               \\
-            & = \mu(1 + \epsilon)
+    \bbar{\mathbb{x}} & = \sum\limits_{j=0}^{K-1}(\mu_j + L_{ij} \mathbb{u}_j)
+    \nonumber                                                                  \\
+                      & =
+    \mu + \frac{1}{K}\mathbf{j}^\top \mathbf{L} \, \mathbbb{u}
+    \nonumber                                                                  \\
+                      & = \mu(1 + \mathbb{r})
     \quad,
 \end{align}
 %
@@ -241,10 +240,10 @@ where we define the quantity
 %
 \begin{align}
     \label{eq:epsilon}
-    \epsilon
-     & \equiv \frac{\bar{x}}{\mu} - 1
-    \nonumber                                                    \\[0.5em]
-     & = \frac{1}{\mu K}\mathbf{j}^\top \mathbf{L} \, \mathbf{u}
+    \mathbb{r}
+     & \equiv \frac{\bbar{\mathbb{x}}}{\mu} - 1
+    \nonumber                                                     \\[0.5em]
+     & = \frac{1}{\mu K}\mathbf{j}^\top \mathbf{L} \, \mathbbb{u}
     \quad.
 \end{align}
 %
@@ -252,7 +251,7 @@ Plugging this in and rearranging, we obtain
 %
 \begin{align}
     \label{eq:SigmaPQR}
-    \tilde{\pmb{\Sigma}}
+    \btilde{\pmb{\Sigma}}
      & =
     \mathbf{P}
     -
@@ -274,30 +273,30 @@ where we define the matrices
     %
     \label{eq:Pexact}
     \mathbf{P} & \equiv
-    \mathbb{E}\Big[
-        \frac{\epsilon^2 \, \mathbf{j} \, \mathbf{j}^\top}{(1 + \epsilon)^2}
+    \mathbbb{E}\Big[
+        \frac{\mathbb{r}^2 \, \mathbf{j} \, \mathbf{j}^\top}{(1 + \mathbb{r})^2}
         \Big]
     %
     \\[0.5em]
     %
     \label{eq:Qexact}
     \mathbf{Q} & \equiv
-    \mathbb{E}\left[
-        \frac{\epsilon\, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top}{(1 + \epsilon)^2}
+    \mathbbb{E}\left[
+        \frac{\mathbb{r}\, \mathbf{L} \, \mathbbb{u} \, \mathbf{j}^\top}{(1 + \mathbb{r})^2}
         \right]
     %
     \\[0.5em]
     %
     \label{eq:Rexact}
     \mathbf{R} & \equiv
-    \mathbb{E}\left[
-        \frac{ \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \, \mathbf{L}^\top}{(1 + \epsilon)^2}
+    \mathbbb{E}\left[
+        \frac{ \mathbf{L} \, \mathbbb{u} \, \mathbbb{u}^\top \, \mathbf{L}^\top}{(1 + \mathbb{r})^2}
         \right]
 \end{align}
 %
 The denominators in the expressions above make direct evaluation of the expectations
 intractable. Provided
-$\big|\epsilon| < 1$ (an assumption we'll revisit below), we can Taylor expand the matrices as
+$\big|\mathbb{r}| < 1$ (an assumption we'll revisit below), we can Taylor expand the matrices as
 %
 \begin{align}
     \label{eq:WhereItAllGoesWrong1}
@@ -306,8 +305,8 @@ $\big|\epsilon| < 1$ (an assumption we'll revisit below), we can Taylor expand t
     \sum\limits_{n=0}^\infty
     (-1)^n (n + 1)
     \,
-    \mathbb{E}\left[
-        \epsilon^{n + 2}
+    \mathbbb{E}\left[
+        \mathbb{r}^{n + 2}
         \,
         \mathbf{j} \, \mathbf{j}^\top
         \right]
@@ -318,11 +317,11 @@ $\big|\epsilon| < 1$ (an assumption we'll revisit below), we can Taylor expand t
     \sum\limits_{n=0}^\infty
     (-1)^n (n + 1)
     \,
-    \mathbb{E}\left[
-        \epsilon^{n + 1} \,
+    \mathbbb{E}\left[
+        \mathbb{r}^{n + 1} \,
         \mathbf{L}
         \,
-        \mathbf{u}
+        \mathbbb{u}
         \,
         \mathbf{j}^\top
         \right]
@@ -333,28 +332,28 @@ $\big|\epsilon| < 1$ (an assumption we'll revisit below), we can Taylor expand t
     \sum\limits_{n=0}^\infty
     (-1)^n (n + 1)
     \,
-    \mathbb{E}\left[
-        \epsilon^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
+    \mathbbb{E}\left[
+        \mathbb{r}^n \, \mathbf{L} \, \mathbbb{u} \, \mathbbb{u}^\top \mathbf{L}^\top
         \right]
 \end{align}
 %
 In the Appendix, we show that the expecations in the expressions above may be computed from
 %
 \begin{align}
-    \mathbb{E}\left[
-        \epsilon^{n + 2} \, \mathbf{j} \, \mathbf{j}^\top
+    \mathbbb{E}\left[
+        \mathbb{r}^{n + 2} \, \mathbf{j} \, \mathbf{j}^\top
         \right]
      & =
     \frac{(n + 1) g_{n} m^\frac{n+2}{2}}{\mu^{n+2}} \, \mathbf{j} \, \mathbf{j}^\top
     \\[0.5em]
-    \mathbb{E}\left[
-        \epsilon^{n + 1} \, \mathbf{L} \, \mathbf{u} \, \mathbf{j}^\top
+    \mathbbb{E}\left[
+        \mathbb{r}^{n + 1} \, \mathbf{L} \, \mathbbb{u} \, \mathbf{j}^\top
         \right]
      & =
     \frac{(n + 1) K \, g_{n} m^\frac{n}{2}}{\mu^{n+1}} \, \mathbf{m} \, \mathbf{j}^\top
     \\[0.5em]
-    \mathbb{E}\left[
-        \epsilon^n \, \mathbf{L} \, \mathbf{u} \, \mathbf{u}^\top \mathbf{L}^\top
+    \mathbbb{E}\left[
+        \mathbb{r}^n \, \mathbf{L} \, \mathbbb{u} \, \mathbbb{u}^\top \mathbf{L}^\top
         \right]
      & =
     \frac{g_n}{\mu^n} \left(
@@ -398,7 +397,7 @@ the final expression for the normalized covariance,
 %
 \begin{align}
     \label{eq:SigmaTilde}
-    \tilde{\pmb{\Sigma}}
+    \btilde{\pmb{\Sigma}}
      & =
     \frac{\alpha \, \pmb{\Sigma}}{\mu^2}  +
     \frac{\alpha \, \left(\mathbf{s} \, \mathbf{s}^\top - \mathbf{m} \, \mathbf{m}^\top\right)}{\mu^2 m}  +
@@ -483,11 +482,11 @@ of convergence for both series is zero.
 Why is this? Recall the assumption we made when expanding the expectation
 integrals in Equations~(\ref{eq:WhereItAllGoesWrong1}), (\ref{eq:WhereItAllGoesWrong2}),
 and (\ref{eq:WhereItAllGoesWrong3}): the Taylor expansion converges only for
-$\big|\epsilon| < 1$. The quantity $\epsilon$ (Equation~\ref{eq:epsilon})
-is indeed small provided the sample mean $\bar{x}$ is close to the GP
-mean $\mu$. However, $\epsilon$ is a random variable, equal to
+$\big|\mathbb{r}| < 1$. The quantity $\mathbb{r}$ (Equation~\ref{eq:epsilon})
+is indeed small provided the sample mean $\bbar{\mathbb{x}}$ is close to the GP
+mean $\mu$. However, $\mathbb{r}$ is a random variable, equal to
 the weighted sum of $K$ standard normal random variables. Because a normal
-distribution has infinite support, $\epsilon$ is guaranteed to take on
+distribution has infinite support, $\mathbb{r}$ is guaranteed to take on
 values greater than unity in the limit that an infinite number of samples
 are drawn from the process. In particular, it is guaranteed to take on values
 arbitrarily close to unity, in which case the sample mean approaches zero and
@@ -545,7 +544,7 @@ correct, and that the expression for the normalized covariance
             from $10^5$ samples from the GP
             (left). The right panel shows the relative difference
             between the series solution and the numerical solution,
-            normalized to the largest element in $\pmb{\tilde{\Sigma}}$.
+            normalized to the largest element in $\btilde{\pmb{\Sigma}}$.
             The maximum difference between the two solutions is less
             than one percent and is within the error of the numerical
             estimate.
