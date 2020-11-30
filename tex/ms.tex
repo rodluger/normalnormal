@@ -75,7 +75,36 @@ wishes to interpret the GP hyperparameters in a physical context
 normalizing one's data to the mean or median value can impart
 (potentially significant) bias.
 
-\section{The problem}
+\section{Normalized Gaussian Processes}
+\label{sec:main}
+
+\subsection{Notation}
+\label{sec:notation}
+
+We adopt
+the following conventions throughout this paper:
+scalars are represented by italic lowercase letters (i.e., $x$)
+and occasionally upercase letters, in particular if the value
+corresponds to an integer (i.e., $K$);
+column vectors are
+represented by boldface lowercase letters
+($\mathbf{x}$); and matrices and other linear operators are represented
+by boldface capital letters ($\mathbf{X}$).
+To make the distinction between numerical values and random variables as
+clear as possible, we use blackboard fonts to denote random variables
+(i.e., $\mathbb{x}$ for a scalar random variable and $\mathbbb{x}$
+for a vector-valued random variable).
+Finally, we use a bar symbol
+($\bbar{\mathbb{x}}$) to denote the mean of a vector-valued random
+variable and the tilde symbol
+($\btilde{\mathbf{x}}$ or $\btilde{\mathbbb{x}}$) to denote a numerical
+quantity or random variable corresponding
+to a normalized Gaussian process.
+
+%
+
+\subsection{The problem}
+\label{sec:problem}
 
 Let $\mathbbb{x} = \left( \mathbb{x}_0 \,\, \cdots \,\, \mathbb{x}_{K-1} \right)^\top$
 be a $K$-dimensional multivariate normal random variable distributed
@@ -90,10 +119,10 @@ and covariance $\pmb{\Sigma}$:
 For simplicity, let us assume the mean is constant, i.e.,
 %
 \begin{align}
-    \pmb{\mu} = \mu \, \mathbf{j}
+    \pmb{\mu} = \mu \, \mathbf{1}
 \end{align}
 %
-where $\mathbf{j}$ is the vector of $K$ ones.
+where $\mathbf{1}$ is the vector of $K$ ones.
 %
 Now suppose we cannot observe samples of $\mathbbb{x}$ directly, but instead we can
 observe samples from the \emph{normalized} process, which we will call
@@ -119,15 +148,16 @@ and covariance of $\btilde{\mathbbb{x}}$ be $\btilde{\pmb{\mu}}$ and $\btilde{\p
 By definition, the mean is unity, i.e,
 %
 \begin{align}
-    \btilde{\pmb{\mu}} = \mathbf{j}
+    \btilde{\pmb{\mu}} = \mathbf{1}
     \quad.
 \end{align}
 %
 What is the expression for $\btilde{\pmb{\Sigma}}$?
 
-\section{The solution}
+\subsection{The solution}
+\label{sec:solution}
 
-The covariance is given by
+From the definition of the covariance, we may compute $\btilde{\pmb{\Sigma}}$ from
 %
 \begin{align}
     \btilde{\pmb{\Sigma}}
@@ -136,19 +166,19 @@ The covariance is given by
     \nonumber \\[0.5em]
      & =
     \mathbbb{E}\left[
-        \left(\frac{\mathbbb{x}}{\bbar{\mathbb{x}}} - \mathbf{j}\right)
-        \left(\frac{\mathbbb{x}}{\bbar{\mathbb{x}}} - \mathbf{j}\right)^\top
+        \left(\frac{\mathbbb{x}}{\bbar{\mathbb{x}}} - \mathbf{1}\right)
+        \left(\frac{\mathbbb{x}}{\bbar{\mathbb{x}}} - \mathbf{1}\right)^\top
         \right]
     \nonumber \\[0.5em]
      & =
     \mathbbb{E}\left[
         \frac{\mathbbb{x}\mathbbb{x}^\top}{\bbar{\mathbb{x}}^2}
         -
-        \frac{\mathbbb{x}\,\mathbf{j}^\top}{\bbar{\mathbb{x}}}
+        \frac{\mathbbb{x}\,\mathbf{1}^\top}{\bbar{\mathbb{x}}}
         -
-        \frac{\mathbf{j}\,\mathbbb{x}^\top}{\bbar{\mathbb{x}}}
+        \frac{\mathbf{1}\,\mathbbb{x}^\top}{\bbar{\mathbb{x}}}
         +
-        \mathbf{j} \, \mathbf{j}^\top
+        \mathbf{1} \, \mathbf{1}^\top
         \right]
     \nonumber \\[0.5em]
      & =
@@ -157,18 +187,20 @@ The covariance is given by
         \right]
     -
     \mathbbb{E}\left[
-        \frac{\mathbbb{x}\,\mathbf{j}^\top}{\bbar{\mathbb{x}}}
+        \frac{\mathbbb{x}\,\mathbf{1}^\top}{\bbar{\mathbb{x}}}
         \right]
     -
     \mathbbb{E}\left[
-        \frac{\mathbf{j}\,\mathbbb{x}^\top}{\bbar{\mathbb{x}}}
+        \frac{\mathbf{1}\,\mathbbb{x}^\top}{\bbar{\mathbb{x}}}
         \right]
     +
-    \mathbf{j} \, \mathbf{j}^\top
-    \quad.
+    \mathbf{1} \, \mathbf{1}^\top
+    \quad,
 \end{align}
 %
-To evaluate this, it is convenient to write
+where $\mathbbb{E}\left[ \cdots \right]$ denotes the expected value of a random variable.
+%
+To evaluate the expression above, it is convenient to write
 %
 \begin{align}
     \mathbbb{x} = \pmb{\mu} + \mathbf{L} \mathbbb{u}
@@ -185,7 +217,7 @@ i.e.,
 and $\mathbbb{u}$ is a standard multivariate normal random variable,
 %
 \begin{align}
-    \mathbbb{u} \sim \mathcal{N}\left( 0, \mathbf{I} \right)
+    \mathbbb{u} \sim \mathcal{N}\left( \mathbf{0}, \mathbf{I} \right)
     \quad,
 \end{align}
 %
@@ -207,7 +239,7 @@ The expression for the covariance $\btilde{\pmb{\Sigma}}$ may now be written
     -
     \mathbbb{E}\left[
         \frac{
-            (\pmb{\mu} + \mathbf{L} \mathbbb{u})\mathbf{j}^\top
+            (\pmb{\mu} + \mathbf{L} \mathbbb{u})\mathbf{1}^\top
         }{
             \bbar{\mathbb{x}}
         }
@@ -215,13 +247,13 @@ The expression for the covariance $\btilde{\pmb{\Sigma}}$ may now be written
     -
     \mathbbb{E}\left[
         \frac{
-            \mathbf{j}(\pmb{\mu} + \mathbf{L} \mathbbb{u})^\top
+            \mathbf{1}(\pmb{\mu} + \mathbf{L} \mathbbb{u})^\top
         }{
             \bbar{\mathbb{x}}
         }
         \right]
     +
-    \mathbf{j} \, \mathbf{j}^\top
+    \mathbf{1} \, \mathbf{1}^\top
 \end{align}
 %
 The mean $\bbar{\mathbb{x}}$ is
@@ -230,7 +262,7 @@ The mean $\bbar{\mathbb{x}}$ is
     \bbar{\mathbb{x}} & = \sum\limits_{j=0}^{K-1}(\mu_j + L_{ij} \mathbb{u}_j)
     \nonumber                                                                  \\
                       & =
-    \mu + \frac{1}{K}\mathbf{j}^\top \mathbf{L} \, \mathbbb{u}
+    \mu + \frac{1}{K}\mathbf{1}^\top \mathbf{L} \, \mathbbb{u}
     \nonumber                                                                  \\
                       & = \mu(1 + \mathbb{r})
     \quad,
@@ -243,7 +275,7 @@ where we define the quantity
     \mathbb{r}
      & \equiv \frac{\bbar{\mathbb{x}}}{\mu} - 1
     \nonumber                                                     \\[0.5em]
-     & = \frac{1}{\mu K}\mathbf{j}^\top \mathbf{L} \, \mathbbb{u}
+     & = \frac{1}{\mu K}\mathbf{1}^\top \mathbf{L} \, \mathbbb{u}
     \quad.
 \end{align}
 %
@@ -274,7 +306,7 @@ where we define the matrices
     \label{eq:Pexact}
     \mathbf{P} & \equiv
     \mathbbb{E}\Big[
-        \frac{\mathbb{r}^2 \, \mathbf{j} \, \mathbf{j}^\top}{(1 + \mathbb{r})^2}
+        \frac{\mathbb{r}^2 \, \mathbf{1} \, \mathbf{1}^\top}{(1 + \mathbb{r})^2}
         \Big]
     %
     \\[0.5em]
@@ -282,7 +314,7 @@ where we define the matrices
     \label{eq:Qexact}
     \mathbf{Q} & \equiv
     \mathbbb{E}\left[
-        \frac{\mathbb{r}\, \mathbf{L} \, \mathbbb{u} \, \mathbf{j}^\top}{(1 + \mathbb{r})^2}
+        \frac{\mathbb{r}\, \mathbf{L} \, \mathbbb{u} \, \mathbf{1}^\top}{(1 + \mathbb{r})^2}
         \right]
     %
     \\[0.5em]
@@ -308,7 +340,7 @@ $\big|\mathbb{r}| < 1$ (an assumption we'll revisit below), we can Taylor expand
     \mathbbb{E}\left[
         \mathbb{r}^{n + 2}
         \,
-        \mathbf{j} \, \mathbf{j}^\top
+        \mathbf{1} \, \mathbf{1}^\top
         \right]
     \\[0.5em]
     \label{eq:WhereItAllGoesWrong2}
@@ -323,7 +355,7 @@ $\big|\mathbb{r}| < 1$ (an assumption we'll revisit below), we can Taylor expand
         \,
         \mathbbb{u}
         \,
-        \mathbf{j}^\top
+        \mathbf{1}^\top
         \right]
     \\[0.5em]
     \label{eq:WhereItAllGoesWrong3}
@@ -341,23 +373,23 @@ In the Appendix, we show that the expecations in the expressions above may be co
 %
 \begin{align}
     \mathbbb{E}\left[
-        \mathbb{r}^{n + 2} \, \mathbf{j} \, \mathbf{j}^\top
+        \mathbb{r}^{n + 2} \, \mathbf{1} \, \mathbf{1}^\top
         \right]
      & =
-    \frac{(n + 1) g_{n} m^\frac{n+2}{2}}{\mu^{n+2}} \, \mathbf{j} \, \mathbf{j}^\top
+    \frac{(n + 1) g_{n} m^\frac{n+2}{2}}{\mu^{n+2}} \, \mathbf{1} \, \mathbf{1}^\top
     \\[0.5em]
     \mathbbb{E}\left[
-        \mathbb{r}^{n + 1} \, \mathbf{L} \, \mathbbb{u} \, \mathbf{j}^\top
+        \mathbb{r}^{n + 1} \, \mathbf{L} \, \mathbbb{u} \, \mathbf{1}^\top
         \right]
      & =
-    \frac{(n + 1) K \, g_{n} m^\frac{n}{2}}{\mu^{n+1}} \, \mathbf{m} \, \mathbf{j}^\top
+    \frac{(n + 1) K \, g_{n} m^\frac{n+2}{2}}{\mu^{n+1}} \, \mathbf{q} \, \mathbf{1}^\top
     \\[0.5em]
     \mathbbb{E}\left[
         \mathbb{r}^n \, \mathbf{L} \, \mathbbb{u} \, \mathbbb{u}^\top \mathbf{L}^\top
         \right]
      & =
     \frac{g_n}{\mu^n} \left(
-    n \,  m^\frac{n - 2}{2} \mathbf{m} \, \mathbf{m}^\top + m^\frac{n}{2} \pmb{\Sigma}
+    n \,  m^\frac{n + 2}{2} \mathbf{q} \, \mathbf{q}^\top + m^\frac{n}{2} \pmb{\Sigma}
     \right)
 \end{align}
 %
@@ -377,20 +409,22 @@ where
 is the expression for the $n^\mathrm{th}$ moment of the standard normal distribution,
 %
 \begin{align}
-    \mathbf{m}
-     & \equiv
-    \frac{1}{K} \pmb{\Sigma} \, \mathbf{j}
-\end{align}
-%
-is the average of each row in $\pmb{\Sigma}$, and
-%
-\begin{align}
     m
      & \equiv
-    \frac{1}{K^2} \mathbf{j}^\top \pmb{\Sigma} \, \mathbf{j}
+    \frac{1}{K^2} \mathbf{1}^\top \pmb{\Sigma} \, \mathbf{1}
 \end{align}
 %
-is the average of all elements in $\pmb{\Sigma}$.
+is the average of all elements in $\pmb{\Sigma}$, and
+%
+\begin{align}
+    \mathbf{q}
+     & \equiv
+    \frac{1}{K m} \pmb{\Sigma} \, \mathbf{1}
+\end{align}
+%
+is the ratio of the average of each row in $\pmb{\Sigma}$ to the average of
+all elements in $\pmb{\Sigma}$.
+
 %
 Inserting these expressions into Equation~(\ref{eq:SigmaPQR}) and rearranging, we obtain
 the final expression for the normalized covariance,
@@ -399,18 +433,20 @@ the final expression for the normalized covariance,
     \label{eq:SigmaTilde}
     \btilde{\pmb{\Sigma}}
      & =
-    \frac{\alpha \, \pmb{\Sigma}}{\mu^2}  +
-    \frac{\alpha \, \left(\mathbf{s} \, \mathbf{s}^\top - \mathbf{m} \, \mathbf{m}^\top\right)}{\mu^2 m}  +
-    \frac{\beta \, \left(\mathbf{s} \, \mathbf{s}^\top\right)}{\mu^2 m}
+    \frac{\alpha}{\mu^2} \pmb{\Sigma} +
+    z \Big(
+    (\alpha + \beta) \, \mathbf{p} \, \mathbf{p}^\top
+    - \alpha \, \mathbf{q} \, \mathbf{q}^\top
+    \Big)
     \quad,
 \end{align}
 %
 where we define
 %
 \begin{align}
-    \mathbf{s}
+    \mathbf{p}
      & \equiv
-    m \, \mathbf{j} - \mathbf{m}
+    \mathbf{1} - \mathbf{q}
     \\[1em]
     \label{eq:alpha}
     \alpha
@@ -437,7 +473,8 @@ as well as the dimensionless parameter
 equal to the average element of the covariance matrix divided by the square of the
 GP mean.
 
-\section{The Bad News}
+\subsection{The Bad News}
+\label{sec:badnews}
 %
 In the previous section we derived a compact expression for
 the covariance of a normalized Gaussian process (Equation~\ref{eq:SigmaTilde}),
@@ -516,6 +553,18 @@ the covariance of the normalized process \emph{ignoring the divergent
 In the following sections, we empirically show that this interpretation is
 correct, and that the expression for the normalized covariance
 (Equation~\ref{eq:SigmaTilde}) is accurate provided $z \ll 1$.
+
+%
+\begin{figure}[t!]
+    \begin{centering}
+        \includegraphics[width=\linewidth]{figures/alpha_beta_values.pdf}
+        \oscaption{alpha_beta_values}{%
+            Caption.
+            \label{fig:alpha_beta_values}
+        }
+    \end{centering}
+\end{figure}
+%
 
 \section{Non-stationarity}
 
